@@ -1,0 +1,1973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morynel Joy O. Pacot — E-Portfolio</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Lora:ital,wght@0,400;0,600;1,400&family=Dancing+Script:wght@700&display=swap');
+
+        :root {
+            --pink-deep: #c2185b;
+            --pink-mid: #ec407a;
+            --pink-light: #f48fb1;
+            --pink-pale: #fce0ec;
+            --pink-ultra: #fff0f5;
+            --gold: #ffa726;
+            --gold-light: #fff2cc;
+            --purple: #5a3d6b;
+            --white: #fffafb;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Lora', serif;
+            background: linear-gradient(135deg, #fce0ec 0%, #f8bbd0 50%, #f48fb1 100%);
+            color: var(--purple);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ============ GATE ENTRANCE ============ */
+        #gate-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(ellipse at center, #ffe8f3 0%, #f8bbd0 40%, #ec407a 100%);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        #gate-overlay.open {
+            pointer-events: none;
+        }
+
+        .gate-scene {
+            position: relative;
+            width: 600px;
+            max-width: 95vw;
+            text-align: center;
+            z-index: 1;
+        }
+
+        .gate-arch {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+
+        .gate-svg {
+            width: 340px;
+            max-width: 90vw;
+            filter: drop-shadow(0 8px 30px rgba(194,24,91,0.4));
+        }
+
+        .gate-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            color: var(--pink-deep);
+            text-shadow: 0 2px 10px rgba(194,24,91,0.3);
+            margin-bottom: 0.5rem;
+        }
+
+        .gate-subtitle {
+            font-family: 'Lora', serif;
+            font-style: italic;
+            color: var(--pink-mid);
+            font-size: 1rem;
+            letter-spacing: 2px;
+            margin-bottom: 1.5rem;
+        }
+
+        .gate-visit-info {
+            font-size: 0.9rem;
+            color: var(--pink-deep);
+            margin-bottom: 1.5rem;
+            font-style: italic;
+            min-height: 1.5rem;
+        }
+
+        .gate-enter-btn {
+            position: relative;
+            background: linear-gradient(135deg, var(--pink-mid), var(--pink-deep));
+            color: white;
+            border: none;
+            padding: 1rem 3rem;
+            font-family: 'Lora', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 6px 25px rgba(194,24,91,0.4);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .gate-enter-btn::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .gate-enter-btn:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 12px 35px rgba(194,24,91,0.5);
+        }
+
+        .gate-enter-btn:hover::before { opacity: 1; }
+
+        .gate-petals {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .petal {
+            position: absolute;
+            font-size: 1.2rem;
+            animation: petalFall linear infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes petalFall {
+            0% { transform: translateY(-20px) rotate(0deg); opacity: 0.8; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Gate door swing animation */
+        .gate-door-left, .gate-door-right {
+            position: fixed;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(135deg, #f8bbd0, #ec407a);
+            transition: transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            z-index: 9998; opacity: 0; pointer-events: none;
+        }
+
+        .gate-door-left { left: 0; transform-origin: left center; }
+        .gate-door-right { right: 0; transform-origin: right center; }
+
+        #gate-overlay.swinging .gate-door-left { transform: perspective(800px) rotateY(-110deg); }
+        #gate-overlay.swinging .gate-door-right { transform: perspective(800px) rotateY(110deg); }
+
+        /* ============ COOKIE BANNER ============ */
+        #cookie-banner {
+            position: fixed;
+            bottom: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: min(600px, 94vw);
+            background: linear-gradient(135deg, rgba(255,240,245,0.98), rgba(248,187,208,0.98));
+            border: 2px solid var(--pink-mid);
+            border-radius: 20px 20px 0 0;
+            padding: 1.5rem 2rem;
+            z-index: 8888;
+            box-shadow: 0 -8px 30px rgba(236,64,122,0.2);
+            transition: bottom 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        #cookie-banner.show { bottom: 0; }
+
+        .cookie-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--pink-deep);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .cookie-text {
+            font-size: 0.9rem;
+            color: var(--purple);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .cookie-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-accept {
+            background: linear-gradient(135deg, var(--pink-mid), var(--pink-deep));
+            color: white;
+            border: none;
+            padding: 0.7rem 2rem;
+            border-radius: 25px;
+            font-family: 'Lora', serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .btn-accept:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(194,24,91,0.3); }
+
+        .btn-decline {
+            background: transparent;
+            color: var(--pink-deep);
+            border: 2px solid var(--pink-mid);
+            padding: 0.7rem 2rem;
+            border-radius: 25px;
+            font-family: 'Lora', serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .btn-decline:hover { background: rgba(236,64,122,0.1); }
+
+        /* ============ TOAST ============ */
+        #toast-container {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            z-index: 7777;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: linear-gradient(135deg, rgba(255,240,245,0.97), rgba(248,187,208,0.97));
+            border: 2px solid var(--pink-mid);
+            border-radius: 15px;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 6px 25px rgba(194,24,91,0.2);
+            font-family: 'Lora', serif;
+            font-size: 0.95rem;
+            color: var(--pink-deep);
+            max-width: 280px;
+            animation: toastSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
+                       toastFade 0.5s ease 3.5s forwards;
+            pointer-events: auto;
+            backdrop-filter: blur(8px);
+        }
+
+        @keyframes toastSlideIn {
+            from { transform: translateX(120%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes toastFade {
+            to { opacity: 0; transform: translateX(60%); }
+        }
+
+        /* ============ MAIN SITE ============ */
+        #main-site {
+            display: none;
+        }
+
+        #main-site.visible {
+            display: block;
+            animation: mainFadeIn 0.8s ease;
+        }
+
+        @keyframes mainFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ============ HEADER ============ */
+        header {
+            text-align: center;
+            padding: 3rem 2rem 2rem;
+            background: linear-gradient(135deg, rgba(255,240,245,0.97), rgba(248,187,208,0.95));
+            border-bottom: 3px solid var(--pink-mid);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '🌸';
+            position: fixed;
+            font-size: 8rem;
+            opacity: 0.05;
+            top: -1rem;
+            left: -1rem;
+            pointer-events: none;
+        }
+
+        .header-tagline {
+            font-size: 0.85rem;
+            color: var(--pink-deep);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 6vw, 3.5rem);
+            color: var(--pink-mid);
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(236,64,122,0.1);
+            margin-bottom: 0.3rem;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: var(--pink-deep);
+            font-style: italic;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .visit-counter-hero {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(248,187,208,0.5), rgba(244,143,177,0.5));
+            border: 1px solid var(--pink-light);
+            border-radius: 20px;
+            padding: 0.4rem 1.2rem;
+            font-size: 0.85rem;
+            color: var(--pink-deep);
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+
+        /* ============ QUARTER TABS NAV ============ */
+        .quarter-nav {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1.5rem 1rem;
+            background: linear-gradient(90deg, rgba(248,187,208,0.7), rgba(244,143,177,0.7));
+            border-bottom: 2px solid var(--pink-mid);
+            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 500;
+            backdrop-filter: blur(10px);
+        }
+
+        .quarter-tab {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #f8bbd0, #f48fb1);
+            border: 2px solid var(--pink-mid);
+            border-radius: 30px 30px 0 0;
+            color: #880e4f;
+            text-decoration: none;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            font-family: 'Lora', serif;
+            position: relative;
+            border-bottom: none;
+        }
+
+        .quarter-tab:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(236,64,122,0.25);
+            background: linear-gradient(135deg, #f48fb1, #f06292);
+        }
+
+        .quarter-tab.active {
+            background: linear-gradient(135deg, #fff0f5, #fce0ec);
+            border-color: #880e4f;
+            color: var(--pink-deep);
+            box-shadow: 0 -4px 15px rgba(194,24,91,0.15);
+            transform: translateY(2px);
+        }
+
+        /* Sub-tabs for sections within a quarter */
+        .section-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0.6rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(90deg, rgba(248,187,208,0.85), rgba(244,143,177,0.85));
+            border-bottom: 2px solid var(--pink-light);
+            flex-wrap: wrap;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .section-tab {
+            padding: 0.55rem 1.4rem;
+            background: rgba(255,255,255,0.55);
+            border: 1.5px solid var(--pink-light);
+            border-radius: 999px;
+            color: var(--pink-deep);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.22s ease;
+            font-family: 'Lora', serif;
+            font-weight: 600;
+            white-space: nowrap;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 2px 8px rgba(236,64,122,0.08);
+        }
+
+        .section-tab:hover {
+            background: rgba(255,255,255,0.85);
+            border-color: var(--pink-mid);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 16px rgba(236,64,122,0.18);
+        }
+
+        .section-tab.active {
+            background: linear-gradient(135deg, var(--pink-mid), var(--pink-deep));
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 4px 18px rgba(194,24,91,0.35);
+            transform: translateY(-1px);
+        }
+
+        /* ============ CONTENT PANES ============ */
+
+        .quarter-pane { display: none; animation: fadeIn 0.4s ease; }
+        .quarter-pane.active { display: block; }
+
+        /* Quarter-level h2 section dividers get side padding to match content */
+        .quarter-pane > h2 {
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+
+        .sub-pane { display: none; animation: fadeIn 0.4s ease; }
+
+        /* Every active sub-pane: consistent centered max-width, same padding all quarters */
+        .sub-pane.active {
+            display: block;
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 0 2rem 3rem;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ============ CARDS & TYPOGRAPHY ============ */
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            color: var(--pink-mid);
+            margin: 2.5rem 0 1.5rem;
+            text-align: center;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 900;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        h2:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--pink-mid), transparent);
+            margin: 1rem auto 0;
+        }
+
+        h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: var(--pink-deep);
+            margin-bottom: 1rem;
+        }
+
+        p {
+            font-size: 1.05rem;
+            color: var(--purple);
+            margin-bottom: 0.8rem;
+            line-height: 1.8;
+        }
+
+        strong { color: var(--pink-mid); font-weight: 700; }
+
+        .card {
+            background: linear-gradient(135deg, rgba(255,240,245,0.9), rgba(248,187,208,0.8));
+            padding: 2rem;
+            border: 2px solid var(--pink-mid);
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 6px 20px rgba(236,64,122,0.12);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(236,64,122,0.22);
+        }
+
+        .card-gold {
+            background: linear-gradient(135deg, rgba(255,242,204,0.9), rgba(255,224,178,0.85));
+            border-color: var(--gold);
+            box-shadow: 0 6px 20px rgba(255,167,38,0.12);
+        }
+
+        .card-gold:hover { box-shadow: 0 12px 30px rgba(255,167,38,0.22); }
+
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--pink-deep);
+            margin-bottom: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .intro-box {
+            background: linear-gradient(135deg, rgba(255,240,245,0.95), rgba(248,187,208,0.9));
+            border: 2px solid var(--pink-mid);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(236,64,122,0.12);
+        }
+
+        .intro-box p { font-size: 1.1rem; font-style: italic; color: #880e4f; }
+
+        .media-container {
+            margin-top: 1rem;
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            padding: 1rem 0;
+            scroll-behavior: smooth;
+        }
+
+        .media-container::-webkit-scrollbar { height: 6px; }
+        .media-container::-webkit-scrollbar-track { background: rgba(236,64,122,0.1); border-radius: 10px; }
+        .media-container::-webkit-scrollbar-thumb { background: var(--pink-mid); border-radius: 10px; }
+
+        .media-container img, .media-container video {
+            flex-shrink: 0;
+            height: 280px;
+            width: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+            transition: transform 0.3s;
+        }
+
+        .media-container img:hover { transform: scale(1.03); }
+
+        details summary { list-style: none; }
+        details summary::-webkit-details-marker { display: none; }
+
+        .discover-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--pink-mid), var(--pink-deep));
+            color: white;
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 30px;
+            font-family: 'Lora', serif;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0.5rem 0;
+            box-shadow: 0 4px 15px rgba(236,64,122,0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .discover-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(236,64,122,0.4); }
+
+        .treasure-msg {
+            background: linear-gradient(135deg, #f8bbd0, #f48fb1);
+            border: 2px solid var(--pink-mid);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ============ PLACEHOLDER CARDS FOR NEW CONTENT ============ */
+        .placeholder-card {
+            background: linear-gradient(135deg, rgba(255,240,245,0.7), rgba(248,187,208,0.5));
+            border: 2px dashed var(--pink-light);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            color: var(--pink-deep);
+            font-style: italic;
+        }
+
+        .placeholder-card .icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .placeholder-card h4 { font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--pink-mid); }
+        .placeholder-card p { font-size: 0.9rem; color: var(--pink-deep); margin: 0; }
+
+        /* ============ FOOTER ============ */
+        footer {
+            background: linear-gradient(135deg, rgba(255,240,245,0.95), rgba(248,187,208,0.95));
+            border-top: 3px solid var(--pink-mid);
+            padding: 2rem;
+            text-align: center;
+            font-family: 'Dancing Script', cursive;
+            color: var(--pink-deep);
+            font-size: 1.1rem;
+        }
+
+        .footer-visit { font-size: 0.85rem; font-family: 'Lora', serif; color: var(--pink-mid); margin-top: 0.5rem; font-style: italic; }
+
+        /* ============ SECTION LABEL BADGE ============ */
+        .quarter-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--pink-mid), var(--pink-deep));
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        /* ============ SCROLL PROGRESS ============ */
+        #scroll-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--pink-light), var(--pink-deep), var(--pink-mid));
+            width: 0%;
+            z-index: 9990;
+            transition: width 0.1s;
+        }
+
+        /* ============ SPARKLE CURSOR ============ */
+        .sparkle {
+            position: fixed;
+            pointer-events: none;
+            font-size: 1rem;
+            z-index: 9000;
+            animation: sparklePop 0.7s ease forwards;
+        }
+
+        @keyframes sparklePop {
+            0% { transform: scale(0) rotate(0deg); opacity: 1; }
+            50% { transform: scale(1.4) rotate(45deg); opacity: 1; }
+            100% { transform: scale(0) rotate(90deg) translateY(-20px); opacity: 0; }
+        }
+
+
+        /* AP Lesson sub-panes */
+        .ap-lesson { display: none; animation: fadeIn 0.4s ease; }
+        .ap-lesson.active { display: block; }
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.2rem; }
+            h2 { font-size: 1.6rem; }
+            .quarter-tab { padding: 0.6rem 1rem; font-size: 0.8rem; }
+            .gate-svg { width: 240px; }
+            .section-tabs { flex-wrap: wrap; }
+            .section-tab { font-size: 0.78rem; padding: 0.6rem 1rem; }
+            .sub-pane.active { padding: 0 1rem 2rem; }
+            .quarter-pane > h2 { padding-left: 1rem; padding-right: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- SCROLL PROGRESS -->
+<div id="scroll-bar"></div>
+
+<!-- TOAST CONTAINER -->
+<div id="toast-container"></div>
+
+<!-- GATE ENTRANCE -->
+<div id="gate-overlay">
+    <div class="gate-petals" id="petals-container"></div>
+
+    <div class="gate-scene">
+        <div class="gate-arch">
+            <svg class="gate-svg" viewBox="0 0 320 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Gate pillars -->
+                <rect x="20" y="100" width="40" height="260" rx="5" fill="#f48fb1" stroke="#c2185b" stroke-width="3"/>
+                <rect x="260" y="100" width="40" height="260" rx="5" fill="#f48fb1" stroke="#c2185b" stroke-width="3"/>
+                <!-- Arch top -->
+                <path d="M20 100 Q160 0 300 100" stroke="#c2185b" stroke-width="4" fill="#fce0ec"/>
+                <!-- Arch decorative inner -->
+                <path d="M35 110 Q160 20 285 110" stroke="#ec407a" stroke-width="2" fill="none" stroke-dasharray="6 4"/>
+                <!-- Gate bars -->
+                <line x1="80" y1="100" x2="80" y2="360" stroke="#ec407a" stroke-width="3"/>
+                <line x1="110" y1="90" x2="110" y2="360" stroke="#ec407a" stroke-width="3"/>
+                <line x1="140" y1="85" x2="140" y2="360" stroke="#ec407a" stroke-width="3"/>
+                <line x1="160" y1="82" x2="160" y2="360" stroke="#c2185b" stroke-width="4"/>
+                <line x1="180" y1="85" x2="180" y2="360" stroke="#ec407a" stroke-width="3"/>
+                <line x1="210" y1="90" x2="210" y2="360" stroke="#ec407a" stroke-width="3"/>
+                <line x1="240" y1="100" x2="240" y2="360" stroke="#ec407a" stroke-width="3"/>
+                <!-- Horizontal bars -->
+                <line x1="20" y1="160" x2="300" y2="160" stroke="#c2185b" stroke-width="2.5"/>
+                <line x1="20" y1="220" x2="300" y2="220" stroke="#c2185b" stroke-width="2.5"/>
+                <line x1="20" y1="280" x2="300" y2="280" stroke="#c2185b" stroke-width="2.5"/>
+                <!-- Floral tops on bars -->
+                <circle cx="80" cy="96" r="6" fill="#ec407a"/>
+                <circle cx="110" cy="86" r="6" fill="#ec407a"/>
+                <circle cx="140" cy="81" r="6" fill="#c2185b"/>
+                <circle cx="160" cy="78" r="8" fill="#c2185b"/>
+                <circle cx="180" cy="81" r="6" fill="#c2185b"/>
+                <circle cx="210" cy="86" r="6" fill="#ec407a"/>
+                <circle cx="240" cy="96" r="6" fill="#ec407a"/>
+                <!-- Roses on pillars -->
+                <text x="25" y="100" font-size="22">🌸</text>
+                <text x="265" y="100" font-size="22">🌸</text>
+                <!-- Center medallion -->
+                <circle cx="160" cy="130" r="18" fill="#fff0f5" stroke="#c2185b" stroke-width="2"/>
+                <text x="151" y="137" font-size="16">💗</text>
+            </svg>
+        </div>
+
+        <div class="gate-title">Morynel Joy</div>
+        <div class="gate-subtitle">✨ E-Portfolio — Enter & Explore ✨</div>
+        <div class="gate-visit-info" id="gate-visit-info"></div>
+        <button class="gate-enter-btn" onclick="enterPortfolio()">🌸 Open the Gates 🌸</button>
+    </div>
+</div>
+
+<!-- COOKIE BANNER -->
+<div id="cookie-banner">
+    <div class="cookie-title">🍪 Cookie Notice</div>
+    <p class="cookie-text">This portfolio uses cookies to remember your visits, save your favorite quarter, and greet you with a personalized welcome. Allow cookies for the full experience!</p>
+    <div class="cookie-buttons">
+        <button class="btn-accept" onclick="acceptCookies()">✨ Accept & Personalize</button>
+        <button class="btn-decline" onclick="declineCookies()">No thanks</button>
+    </div>
+</div>
+
+<!-- MAIN SITE -->
+<div id="main-site">
+    <header>
+        <div class="header-tagline">✨ You know you love me ✨</div>
+        <h1>Morynel Joy</h1>
+        <p class="subtitle">— Portfolio Secrets Revealed —</p>
+        <div class="visit-counter-hero" id="visit-counter-hero">🌸 Welcome to my portfolio!</div>
+    </header>
+
+    <!-- QUARTER TABS -->
+    <nav class="quarter-nav">
+        <button class="quarter-tab active" onclick="showQuarter('q1q2', this)">🌷🌸 1st &amp; 2nd Quarter</button>
+        <button class="quarter-tab" onclick="showQuarter('q3', this)">🌺 3rd Quarter</button>
+        <button class="quarter-tab" onclick="showQuarter('q4', this)">💐 4th Quarter</button>
+    </nav>
+
+
+        <div class="quarter-pane active" id="pane-q1q2">
+
+            <!-- ── 1ST and 2ND QUARTER ── -->
+            <h2 style="margin-top:2rem;">🌷 1st &amp; 2nd Quarter</h2>
+            <div class="section-tabs">
+                <button class="section-tab active" onclick="showSub('q1q2','home',this)">🏠 Home &amp; Personal</button>
+                <button class="section-tab" onclick="showSub('q1q2','ict',this)">💻 ICT Lessons <small style="font-size:0.7rem;">(Original content)</small></button>
+                <button class="section-tab" onclick="showSub('q1q2','events',this)">🎉 Events <small style="font-size:0.7rem;">(Original content)</small></button>
+                <button class="section-tab" onclick="showSub('q1q2','q2ap',this)">📚 Araling Panlipunan</button>
+            </div>
+
+            <!-- Q1 Home -->
+            <div class="sub-pane active" id="q1q2-home">
+                <h2>Welcome!</h2>
+                <div class="intro-box">
+                    <p>Step into the world of Morynel Joy O. Pacot — where stories unfold. Xoxo</p>
+                </div>
+                <div class="grid">
+                    <div class="card card-gold">
+                        <div class="card-title">✨ About Me</div>
+                        <p><strong>Name:</strong> Morynel Joy O. Pacot</p>
+                        <p><strong>Age:</strong> 14 years old</p>
+                        <p><strong>Birthday:</strong> December 16, 2010</p>
+                        <p>I'm a person who can be both outgoing and shy depending on the situation. I enjoy being around people and making new friends, but I also appreciate quiet moments to reflect on my thoughts. My dream is to become either a psychologist or an IT specialist someday. I've always wanted to understand people's emotions better, and my kuya has inspired me to explore the world of technology since I was little.</p>
+                    </div>
+                    <div class="card card-gold">
+                        <div class="card-title">💎 Quest Treasure</div>
+                        <details>
+                            <summary class="discover-btn">🔍 Discover More</summary>
+                            <div class="treasure-msg">
+                                <div class="media-container">
+                                    <img src="joy1.jpg" alt="Me (1)">
+                                    <img src="joy2.jpg" alt="Me (2)">
+                                    <img src="joy3.jpg" alt="Me (3)">
+                                    <img src="joy4.jpg" alt="Me (4)">
+                                    <video controls><source src="joy5.mp4" type="video/mp4">Your browser does not support the video tag.</video>
+                                </div>
+                                <p style="margin-top:1rem;font-style:italic;font-size:0.9rem;">My pics and more about me (scroll right →)</p>
+                                <p>I'm a Christian, though I admit that I'm still learning how to strengthen my faith and deepen my relationship with God. It's something I remind myself to work on every day.</p>
+                                <p>Back then, I loved reading books and getting lost in stories. Nowadays, I'm still figuring out what hobbies truly make me happy, but I enjoy watching TikTok and cooking whenever I feel like it. Even if I'm still in the process of discovering myself, I know that I'm growing—slowly but surely—into the person I'm meant to be.</p>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+
+                <h2>My Inner Circle</h2>
+                <div class="card">
+                    <div class="card-title">🎀 My Favorites</div>
+                    <p><strong>Songs:</strong></p>
+                    <p>• Love is by The Ridleys</p>
+                    <p>• Campfire, To You, and Kidult by Seventeen</p>
+                    <p>• Bawat daan by Ebe Dancel</p>
+                </div>
+                <div class="card">
+                    <div class="card-title">💯 My Friends</div>
+                    <p>My friends have always felt like an extension of my family. Our group, the Skinnies — Martin, Dash, Maeur, Rolly, Jayzel, me (Joy), Yeuffa, Laurenz, Mark, Nicole, Chloe, and Ayeka — started back in seventh grade. Even though we eventually got separated into different sections and schools, our bond never really changed.</p>
+                    <p>Among everyone, I've always been closest to Ayeka and Yeuffa. With Ayeka, I can be my most vulnerable self. She listens without judgment, and no matter how small my problems are, she always makes me feel heard.</p>
+                    <p>Aya has been my best friend since before I could even spell "best friend." We've known each other since we were younger than five, and she's seen every part of who I am — the loud, the quiet, the broken, and the healed.</p>
+                    <div class="media-container">
+                        <video controls><source src="love.mp4" type="video/mp4">Your browser does not support the video tag.</video>
+                        <img src="skinnies.jpeg" alt="The Skinnies">
+                        <img src="nathalie.jpg" alt="Nathalie">
+                        <img src="friends.png" alt="My friends">
+                        <img src="aya.jpg" alt="My bestfriend">
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">❤️ My Family</div>
+                    <p>Behind every great girl is an even greater family. One thing I'm really proud of about my family is how we show love in quiet, unspoken ways. My dad isn't the affectionate type — but behind his calm and serious face is a kind of love that doesn't need words. He's the kind of dad who secretly slips money into my bag even when Mom tells him not to.</p>
+                    <p>My mom shows her love in a similar way. She's the person I run to when everything feels heavy. I can tell her almost anything because she always tries to understand and support whatever makes me happy.</p>
+                    <p>And then there's my sister — my best friend since I was two. With her, I can always be myself, knowing I'll never be judged.</p>
+                    <div class="media-container">
+                        <video controls><source src="lovefam.mp4" type="video/mp4">Your browser does not support the video tag.</video>
+                        <img src="family.jpg" alt="Family">
+                        <img src="cy.jpg" alt="My sister">
+                        <img src="mama.jpg" alt="Me and my mommy">
+                        <img src="fambam.jpg" alt="Love">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q1 and Q2 ICT -->
+            <div class="sub-pane" id="q1q2-ict">
+                <div class="card card-gold" style="margin-top:2rem;">
+                    <div class="card-title">🎯 Mission 1: ICT Lessons (1st Quarter)</div>
+                    <p>A series of tech-savvy adventures where secrets of code are revealed…</p>
+                </div>
+                <div class="card">
+                    <div class="card-title">📝 Lesson 1 — Introduction to CSS</div>
+                    <p><strong>Output:</strong></p>
+                    <div class="media-container">
+                        <img src="benefits.png" alt="Benefits of CSS">
+                        <img src="layers.png" alt="Layers of a Webpage">
+                    </div>
+                    <p><strong>Description:</strong> This lesson introduced CSS or Cascading Style Sheets and explained how it works with HTML to design webpages. It also discussed the three layers of a webpage: content, presentation, and behavior.</p>
+                    <p><strong>What I learned:</strong> I learned that CSS is used to control the look and layout of a webpage while HTML provides the structure. I also learned about the benefits of CSS such as saving time, improving design, and making websites load faster.</p>
+                </div>
+                <div class="card">
+                    <div class="card-title">📝 Lesson 2 — Types of CSS</div>
+                    <p><strong>Output:</strong></p>
+                    <div class="media-container">
+                        <img src="internal.png" alt="Internal CSS">
+                        <img src="inline.png" alt="Inline CSS">
+                    </div>
+                    <p><strong>Description:</strong> This lesson was all about how CSS helps control the design and layout of a webpage. It showed how style sheets make websites more organized and visually appealing.</p>
+                    <p><strong>What I learned:</strong> I learned the three kinds of CSS—external, embedded, and inline—and how each one is used to style HTML elements.</p>
+                </div>
+                <div class="card">
+                    <div class="card-title">📝 Lesson 3 — Display Property, Div and Span Tags</div>
+                    <p><strong>Output:</strong></p>
+                    <div class="media-container">
+                        <img src="div.png" alt="Div Tag">
+                        <img src="span.png" alt="Span Tag">
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">📝 Lesson 4 — CSS Rules and Classes</div>
+                    <p><strong>Output:</strong></p>
+                    <div class="media-container">
+                        <img src="lesson4.png" alt="Rules and Classes">
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">📝 Lesson 5 — CSS Selectors</div>
+                    <p><strong>Output:</strong></p>
+                    <div class="media-container">
+                        <img src="lesson5.png" alt="CSS Selectors">
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">📝 Lesson 6 — Dimensions and Pseudo-classes</div>
+                    <p><strong>Output:</strong></p>
+                    <div class="media-container">
+                        <img src="lesson6_one.png" alt="Pseudo classes">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q1 Events -->
+            <div class="sub-pane" id="q1q2-events">
+                <div class="card card-gold" style="margin-top:2rem;">
+                    <div class="card-title">🎊 1st Quarter Season Events</div>
+                    <p><strong>Featured:</strong> Buwan ng Wika, Intrams, Science Fair, AP Month, Teachers' Day, Cluster Meet</p>
+                </div>
+                <div class="card">
+                    <div class="card-title">🎈 Buwan ng Wika</div>
+                    <details>
+                        <summary class="discover-btn">🔓 View Event Details</summary>
+                        <div class="treasure-msg">
+                            <div class="media-container">
+                                <video controls><source src="wika2.mp4" type="video/mp4">Your browser does not support the video tag.</video>
+                                <img src="buwanngwika.jpg" alt="Buwan ng Wika (2)">
+                                <img src="wika.jpg" alt="Buwan ng Wika (1)">
+                            </div>
+                            <p>📸 Photos & videos by: Ang Paham</p>
+                            <p><strong>💭 Reflection:</strong> The most important moment was realizing how our Filipino language connects us all as students. I now make a conscious effort to use Filipino more in daily conversations and appreciate the beauty of our language.</p>
+                            <p>I participated by wearing traditional Filipino clothing (barong at saya). Buwan ng Wika reminds us that our language and culture are treasures worth preserving.</p>
+                        </div>
+                    </details>
+                </div>
+                <div class="card">
+                    <div class="card-title">🎈 Intrams</div>
+                    <details>
+                        <summary class="discover-btn">🔓 View Event Details</summary>
+                        <div class="treasure-msg">
+                            <div class="media-container">
+                                <video controls><source src="tabletennis.mp4" type="video/mp4">Your browser does not support the video tag.</video>
+                                <img src="intr.jpg" alt="Intrams (1)">
+                                <img src="intrams.jpg" alt="Intrams (2)">
+                            </div>
+                            <p>📸 Photos & videos by: Jayzel Zyrine Macawili, LPress, Jade Imperial</p>
+                            <p><strong>💭 Reflection:</strong> I learned that you don't have to be an athlete to be part of the team. Support, encouragement, and school spirit are just as valuable as competing. I participated by actively supporting and cheering for my friends and classmates who competed.</p>
+                        </div>
+                    </details>
+                </div>
+                <div class="card">
+                    <div class="card-title">🎈 Science Month</div>
+                    <details>
+                        <summary class="discover-btn">🔓 View Event Details</summary>
+                        <div class="treasure-msg">
+                            <div class="media-container">
+                                <video controls><source src="scie.mp4" type="video/mp4">Your browser does not support the video tag.</video>
+                                <img src="sci.jpg" alt="Science Month (2)">
+                                <img src="scimonth.jpg" alt="Science Month (1)">
+                            </div>
+                            <p><strong>💭 Reflection:</strong> I participated in a research colloquium where we presented our study on using biodiesel (cocomethyl) as an alternative fuel to reduce carbon emissions. Presenting our findings and answering questions from judges and audiences was both challenging and rewarding.</p>
+                        </div>
+                    </details>
+                </div>
+                <div class="card">
+                    <div class="card-title">🎈 AP Month</div>
+                    <details>
+                        <summary class="discover-btn">🔓 View Event Details</summary>
+                        <div class="treasure-msg">
+                            <div class="media-container">
+                                <video controls><source src="apmonth.mp4" type="video/mp4">Your browser does not support the video tag.</video>
+                                <img src="time.jpg" alt="AP Month (2)">
+                                <img src="mari.jpg" alt="AP Month (1)">
+                            </div>
+                            <p><strong>💭 Reflection:</strong> I participated through drawing an editorial cartoon, attending seminars, and taking the quiz bee in class. Understanding economic principles helps me make smarter decisions about spending and saving.</p>
+                        </div>
+                    </details>
+                </div>
+                <div class="card">
+                    <div class="card-title">🎈 Teachers' Day</div>
+                    <details>
+                        <summary class="discover-btn">🔓 View Event Details</summary>
+                        <div class="treasure-msg">
+                            <div class="media-container">
+                                <img src="mscani.jpg" alt="Teachers' Day (2)">
+                                <img src="ll.jpg" alt="Teachers' Day (1)">
+                            </div>
+                            <p><strong>💭 Reflection:</strong> As an officer, I actively participated by helping prepare and arrange flowers for our teachers. Being part of the organizing team and seeing their genuine appreciation made the experience meaningful and fulfilling.</p>
+                        </div>
+                    </details>
+                </div>
+                <div class="card">
+                    <div class="card-title">🎈 Cluster Meet</div>
+                    <details>
+                        <summary class="discover-btn">🔓 View Event Details</summary>
+                        <div class="treasure-msg">
+                            <div class="media-container">
+                                <video controls><source src="cluster.mp4" type="video/mp4">Your browser does not support the video tag.</video>
+                                <img src="lpsci.jpg" alt="Cluster Meet (2)">
+                                <img src="greenschool.jpg" alt="Cluster Meet (1)">
+                            </div>
+                            <p><strong>💭 Reflection:</strong> I learned the power of support and school pride. Watching my friends compete and representing our school taught me that being part of a community means showing up for each other, celebrating successes, and providing encouragement through challenges.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+  <!-- Q2 AP (Araling Panlipunan) -->
+            <div class="sub-pane" id="q1q2-q2ap">
+                <h2>📚 Economics Adventure</h2>
+                <div class="card card-gold">
+                    <div class="card-title">🌟 Unit: Maykroekonomiks</div>
+                    <p>A journey through the secrets of economics. Two visual lessons per topic.</p>
+                </div>
+                <div class="card">
+                    <div class="card-title">1️⃣ Demand</div>
+                    <p><strong>📘 Kahulugan:</strong> Ang demand ay tumutukoy sa dami ng produkto o serbisyo na gusto at kayang bilhin ng mamimili sa isang takdang presyo at panahon.</p>
+                    <p><strong>Batas ng Demand: Ceteris paribus</strong> — Kapag tumataas ang presyo, bumababa ang demand; kapag bumababa ang presyo, tumataas ang demand.</p>
+                    <p><strong>Mga Salik na Nakaaapekto sa Demand:</strong> Kita ng Mamimili, Panlasa at Kagustuhan, Presyo ng Kaugnay na Produkto, Dami ng Mamimili, Inaasahan sa Hinaharap.</p>
+                    <div class="media-container">
+                        <img src="s&d.jpg" alt="Demand (2)">
+                        <img src="law.png" alt="Demand (1)">
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">2️⃣ Supply</div>
+                    <p><strong>📘 Kahulugan:</strong> Ang supply ay dami ng produkto o serbisyo na handa at kayang ipagbili ng mga prodyuser sa takdang presyo at panahon.</p>
+                    <p><strong>Batas ng Supply: Ceteris paribus</strong> — Kapag tumataas ang presyo, tumataas ang supply; direktang ugnayan sa pagitan ng presyo at dami ng supply.</p>
+                    <p><strong>Mga Salik:</strong> Teknolohiya, Presyo ng Input, Bilang ng Prodyuser, Inaasahan sa Presyo, Kalikasan at Panahon.</p>
+                    <div class="media-container">
+                        <img src="ply.png" alt="Supply (2)">
+                        <img src="sup.jpg" alt="Supply (1)">
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">3️⃣ Elasticity</div>
+                    <p><strong>📘 Kahulugan:</strong> Ang price elasticity ay sumusukat kung gaano kalaki ang pagtugon ng demand o supply sa pagbabago ng presyo.</p>
+                    <p><strong>Mga Uri:</strong> Elastic Demand, Inelastic Demand, Unitary Elastic.</p>
+                    <p><strong>Halimbawa:</strong> Kapag tumaas ng 10% ang presyo ng softdrinks at bumaba ang demand ng 30%, ito ay elastic.</p>
+                    <div class="media-container">
+                        <img src="elasticity.jpg" alt="Types of Elasticity">
+                        <img src="Price_Elasticity.png" alt="Types of Elasticity (2)">
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">4️⃣ Market Equilibrium</div>
+                    <p><strong>📘 Kahulugan:</strong> Ang market equilibrium ay kalagayan kung saan nagtatagpo ang demand at supply — walang labis (surplus) o kulang (shortage).</p>
+                    <p><strong>Mga Sangkap:</strong> Equilibrium Price at Equilibrium Quantity.</p>
+                    <div class="media-container">
+                        <img src="equilibrium-quantity.jpg" alt="Market Equilibrium">
+                        <img src="elp.png" alt="Market Equilibrium (2)">
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">5️⃣ Iba't Ibang Estruktura ng Pamilihan</div>
+                    <p><strong>1. Ganap na Kompetisyon</strong> — Maraming nagbebenta at bumibili; pare-pareho ang produkto. Hal: palengke, gulayan.</p>
+                    <p><strong>2. Monopolyo</strong> — Isang kompanya lang ang nagbebenta. Hal: Meralco.</p>
+                    <p><strong>3. Monopolistikong Kompetisyon</strong> — Maraming nagbebenta pero may kaunting pagkakaiba sa produkto. Hal: sabon, toothpaste.</p>
+                    <p><strong>4. Oligopolyo</strong> — Kaunting kompanya ang nagkokontrol ng presyo. Hal: telco companies, oil firms.</p>
+                    <div class="media-container">
+                        <img src="lesson5(1).png" alt="Estruktura ng Pamilihan">
+                        <img src="estruktura.png" alt="Estruktura ng Pamilihan (2)">
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">🌸 Aralin 6 — Bahaging Ginagampanan ng Pamahalaan sa Ekonomiya</div>
+                    <p><strong>Layunin:</strong> Panatilihin ang patas na kompetisyon, protektahan ang mamimili at prodyuser, kontrolin ang presyo at iwasan ang pang-aabuso.</p>
+                    <p><strong>🏷️ Price Act (RA 7581)</strong> — Pinoprotektahan ang mamimili laban sa sobrang taas ng presyo.</p>
+                    <p><strong>🛍️ Consumer Act (RA 7394)</strong> — Pinangangalagaan ang karapatan ng mamimili.</p>
+                    <p><strong>📉 Price Ceiling</strong> — Pinakamataas na presyo na puwedeng ipataw ng nagtitinda. Hal: presyo sa bigas.</p>
+                    <p><strong>📈 Price Floor</strong> — Pinakamababang presyo na itinatalaga ng pamahalaan. Hal: minimum wage.</p>
+                    <div class="media-container">
+                        <img src="priceceiling.jpg" alt="Price Ceiling">
+                        <img src="123.jpg" alt="Price Floor (2)">
+                    </div>
+                </div>
+            </div>
+        </div><!-- end pane-q1q2 -->
+        <!-- ====== 3RD QUARTER ====== -->
+        <div class="quarter-pane" id="pane-q3">
+            <div class="section-tabs">
+                <button class="section-tab active" onclick="showSub('q3','lessons',this)">💻 ICT Lessons</button>
+                <button class="section-tab" onclick="showSub('q3','events',this)">🎉 Events</button>
+            </div>
+
+            <!-- Q3 Lessons -->
+            <div class="sub-pane active" id="q3-lessons">
+                <div class="card card-gold" style="margin-top:2rem;">
+                    <div class="card-title">🎯 3rd Quarter ICT Lessons</div>
+                    <p>At least 3 browser outputs from the 3rd quarter lesson.</p>
+                </div>
+                <div class="card">
+                    <div class="card-title">📝 Formatting Text with CSS Indenting Text</div>
+                    <p><strong>Output:</strong></p>
+                    <div class="media-container">
+                        <img src="3rdl2.png" alt="Formatting Text 1">
+                    </div>
+                    <p><strong>Reflection:</strong> The topic was about text indentation using CSS to improve the appearance of paragraphs on a webpage. Indenting the first line helps separate ideas and makes the text easier to read. From this activity, I learned how CSS can control the spacing and formatting of text. It also helped me understand how small design changes can make content look cleaner and more organized. </p>
+                     </div>
+
+                <div class="card">
+                    <div class="card-title">📝Formatting Text with CSS Typography</div>
+                    <p><strong>Output:</strong></p>
+                    <div class="media-container">
+                        <img src="3rdl1.png" alt="Formatting Text 2">
+                    </div>
+                    <p><strong>Reflection:</strong> In this activity, I learned how CSS can be used to format and improve the appearance of text on a webpage. I discovered different font properties such as font-family, font-size, font-weight, font-style, and font-variant. These properties help control how text looks, whether it is bold, italic, larger in size, or displayed in small caps. By applying these styles to different paragraphs, I better understood how CSS works with HTML to make content more organized and visually appealing. This activity helped me realize that proper text formatting is important in making webpages clear and attractive to readers.
+ </p>
+                     </div>
+
+                <div class="card">
+                    <div class="card-title">📝 Formatting Border & Table
+Padding</div>
+                    <p><strong>Output:</strong></p>
+                    <div class="media-container">
+                        <img src="3rdl4.png" alt="Formatting Text 3">
+                    </div>
+                    <p><strong>Reflection:</strong> During this activity, I learned how to create and style a table using HTML and CSS. I understood how different tags such as table, tr, td, and th work together to organize information properly. I also learned how CSS can change the appearance of the table, such as the background color, text alignment, font size, and borders. By making the table pink-themed, I realized that design and style can make a webpage more appealing and easier to read. Overall, this activity helped me improve my basic web design skills and understand how structure and style work together in creating webpages.
+</p>
+                     </div>
+            </div><!-- end q3-lessons -->
+
+            <!-- Q3 Events -->
+            <div class="sub-pane" id="q3-events">
+                <div class="card card-gold" style="margin-top:2rem;">
+                    <div class="card-title">🎊 3rd Quarter Events</div>
+                   
+                </div>
+
+   <div class="card">
+                    <div class="card-title">VPOP Values Month </div>
+                    <details>
+                        <summary class="discover-btn">🔓 View Event Details</summary>
+                        <div class="treasure-msg">
+                            <div class="media-container">
+                                  <img src="vpop1.jpg" alt="VALUES MONTH VPOP (2)">
+                                <img src="vpop2.jpg" alt="VALUES MONTH VPOP (1)">
+                            </div>
+                            <p>📸 Photos & videos by: 9-Family Parents</p>
+                            <p><strong>💭 Reflection:</strong> The VPOP performance brought together all junior high school students to present a dance that reflected the theme “Kabataan bilang pundasyon ng bayan.” Each section performed as a group, showing how the youth can express important messages through movement and creativity. Preparing for the performance was not easy because our section experienced challenges such as disagreements and problems with time management. However, through cooperation and effort, we were still able to complete our performance. This experience taught me the importance of teamwork, patience, and understanding one another to achieve a common goal.</p>
+                        </div>
+                    </details>
+                </div>
+
+    <div class="card">
+                    <div class="card-title"> Event 2 — Math Gardening </div>
+                    <details>
+                        <summary class="discover-btn">🔓 View Event Details</summary>
+                        <div class="treasure-msg">
+                            <div class="media-container">
+                                 <img src="garden.jpg" alt="Math Gardening (2)">
+                                <img src="garden2.jpg" alt="Math Gardening (1)">
+                            </div>
+                            <p>📸 Photos by: Eunice Tecson, Riley Dablo</p>
+                            <p><strong>💭 Reflection:</strong> Math Month was a celebration that highlighted the importance of mathematics in learning and everyday life. Different activities were organized to make math more engaging and enjoyable for students. It showed that math is not only about solving problems but also about developing critical thinking and logical reasoning. The event helped make the subject more interesting and encouraged students to appreciate its value.</p>
+                        </div>
+                    </details>
+                </div>
+
+  <div class="card">
+                    <div class="card-title"> Event 3 — Most Valuable Person</div>
+                    <details>
+                        <summary class="discover-btn">🔓 View Event Details</summary>
+                        <div class="treasure-msg">
+                            <div class="media-container">
+                                 <img src="mvp.jpg" alt="Most Valuable Person (2)">
+                                <img src="mvp2.jpg" alt="Most Valuable Person (1)">
+                            </div>
+                            <p>📸 Photos & videos by: Jade Imperial</p>
+                            <p><strong>💭 Reflection:</strong> The MVP pageant during Values Month highlighted the importance of different values that guide our actions and decisions. Each participant represented a value and showed how it can influence people’s behavior and mindset. Watching the pageant reminded me that values are not just concepts we learn in class but principles that we should practice in our daily lives. The event helped emphasize how important it is to live with integrity, respect, and kindness.</p>
+                        </div>
+                    </details>
+                </div>
+
+
+            </div>
+        </div>
+
+        <!-- ====== 4TH QUARTER ====== -->
+        <div class="quarter-pane" id="pane-q4">
+            <div class="section-tabs">
+                <button class="section-tab active" onclick="showSub('q4','lessons',this)">💻 ICT Lessons</button>
+                <button class="section-tab" onclick="showSub('q4','events',this)">🎉 Events</button>
+                <button class="section-tab" onclick="showSub('q4','ap',this)">📚 Araling Panlipunan</button>
+                <button class="section-tab" onclick="showSub('q4','noli',this)">🎭 Noli Drama</button>
+            </div>
+
+            <!-- Q4 Lessons -->
+            <div class="sub-pane active" id="q4-lessons">
+                <div class="card card-gold" style="margin-top:2rem;">
+                    <div class="card-title">🎯 4th Quarter ICT Lessons — JavaScript (TLE ICT 9)</div>
+                    <p>JavaScript is a programming language used to make webpages interactive and dynamic. These lessons cover script placement, core concepts, variables, events, popup boxes, and operators.</p>
+                </div>
+
+                <!-- Lesson 1 -->
+                <div class="card">
+                    <div class="card-title">📝 Lesson 1 — JavaScript Introduction</div>
+                    <p><strong>Browser Output:</strong> The text <em>"My First JavaScript code"</em> is displayed as a heading on the webpage, written using <code>document.write()</code> inside a <code>&lt;script&gt;</code> tag.
+                      <div style="margin:0.8rem 0;border-radius:10px;overflow:hidden;border:1.5px solid var(--pink-light);background:rgba(255,240,245,0.5);">
+                        <img src="4thl1.png" alt="JavaScript Introduction" style="width:100%;height:auto;display:block;">
+                    </div></p>
+                    <pre style="background:rgba(255,240,245,0.8);border:1.5px solid var(--pink-light);border-radius:10px;padding:1rem;font-size:0.82rem;overflow-x:auto;line-height:1.6;color:var(--purple);margin:0.8rem 0;">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;JavaScript&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;My First JavaScript code&lt;/h1&gt;
+&lt;script type="text/javascript"&gt;
+&lt;!--
+document.write("Displaying text using JavaScript");
+//--&gt;
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+
+                    <p><strong>What is JavaScript?</strong> JavaScript is the most popular and widely used scripting language on the internet. It is recognized and works in all major browsers. It was developed by <strong>Brendan Eich</strong> of Netscape originally under the name <em>Mocha</em>, then renamed to <em>LiveScript</em>, and finally became JavaScript. It was opened to Internet Explorer in <strong>1996</strong> and is a trademark of the <strong>Oracle Corporation</strong>, licensed to entities like Mozilla Foundation.</p>
+
+                    <p><strong>Purpose:</strong> JavaScript is used to create dynamic, interactive user experiences — handling UI rendering (like React for Facebook), real-time updates, personalized feeds, video controls, and tracking user activity. It powers platforms like Google, YouTube, and Facebook.</p>
+
+                    <p><strong>Static vs. Dynamic Websites:</strong> A <strong>static webpage</strong> (flat/stationary page) is delivered to the browser exactly as stored — example: a photographer's portfolio. A <strong>dynamic website</strong> displays different content based on user actions or preferences — example: social media platforms.</p>
+
+                    <p><strong>Key Characteristics of JavaScript:</strong> It is a client-side, high-level scripting, interpreted, and object-oriented language. <em>Client-side</em> means codes are processed on the user's own computer. <em>High-level scripting</em> means code is written in words close to English. <em>Interpreted</em> means the source code is converted into machine code at runtime. It is also case-sensitive, and semi-colons at the end of each statement are not required.</p>
+
+                    <p><strong>What can JavaScript do?</strong></p>
+                    <p>● <strong>React to events</strong> — mouse clicks, pre-loading of webpages, keydowns, and more.<br>
+                    ● <strong>Validate data</strong> — instead of server-side scripting, JS can validate form input to save processing time.<br>
+                    ● <strong>Create cookies</strong> — used to save/retrieve information from a visitor's computer to monitor habits and preferences.<br>
+                    ● <strong>Enhance a webpage</strong> — makes content more dynamic and interactive.</p>
+
+                    <p><strong>Features of JavaScript:</strong> Supports all structured C-syntax; has dynamic typing (variable types can change at runtime); can run locally for faster interaction; detects user actions like mouse clicks; and can be combined with CSS to produce <strong>DHTML</strong> (Dynamic HTML) — enabling effects like message scrollers, mouse trails, and falling snow.</p>
+
+                    <p><strong>Characteristics:</strong> Lightweight, inserted into HTML pages, supported by all modern browsers, easy to learn, quick to download, no extra tools needed, license-free, and has a thriving online developer community.</p>
+
+                    <p><strong>Disadvantages:</strong> Some older browsers (PDA, mobile) don't support JS; secrets embedded in JS can be extracted; JS and DOM can be exploited by malicious scripts; source code is sent to the client and can be reverse engineered.</p>
+
+                    <p><strong>How to start using JavaScript:</strong> The <code>&lt;script&gt;&lt;/script&gt;</code> tag is used to write JavaScript. The <code>type</code> attribute defines the scripting language. To display output on a webpage, the <code>document.write</code> command is used.</p>
+
+                    <p><strong>Difference — HTML vs CSS vs JavaScript:</strong><br>
+                    🔶 <strong>HTML</strong> — creates the structure (layout, content, building blocks)<br>
+                    🔷 <strong>CSS</strong> — stylizes the website (look and feel, responsiveness)<br>
+                    🟡 <strong>JavaScript</strong> — increases interactivity (complex functions, dynamic features)</p>
+                </div>
+
+                <!-- Lesson 2 -->
+                <div class="card">
+                    <div class="card-title">📝 Lesson 2 — JavaScript Script Placement &amp; Guidelines</div>
+                    <p><strong>Browser Output:</strong> A popup message saying <em>"Welcome Visitor!"</em> appears when the webpage loads.
+ <div style="margin:0.8rem 0;border-radius:10px;overflow:hidden;border:1.5px solid var(--pink-light);background:rgba(255,240,245,0.5);">
+                        <img src="4thl2.png" alt="JavaScript Script Placement" style="width:100%;height:auto;display:block;">
+                    </div></p>
+                    <pre style="background:rgba(255,240,245,0.8);border:1.5px solid var(--pink-light);border-radius:10px;padding:1rem;font-size:0.82rem;overflow-x:auto;line-height:1.6;color:var(--purple);margin:0.8rem 0;">&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;JavaScript Example&lt;/title&gt;
+&lt;script&gt;
+function greet(){
+   alert("Welcome Visitor!");
+}
+&lt;/script&gt;
+&lt;/head&gt;
+&lt;body onload="greet()"&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+                    <p><strong>Description:</strong> This lesson explains where JavaScript can be placed in an HTML document and the basic coding rules programmers should follow. JavaScript can be written in the head section, body section, both sections, or in an external file. It also introduces coding guidelines like case sensitivity, whitespace usage, and breaking lines of code.</p>
+                    <p><strong>What I Learned:</strong> JavaScript can be placed in the HEAD, BODY, or external files. External JavaScript files use the <strong>.js</strong> extension. JavaScript is case sensitive, and white spaces make code easier to read. Comments help explain code, and long lines can be broken for readability.</p>
+                </div>
+
+                <!-- Lesson 3 -->
+                <div class="card">
+                    <div class="card-title">📝 Lesson 3 — JavaScript Concepts and Variables</div>
+                    <p><strong>Browser Output:</strong> The text <em>"Hello World"</em> is displayed on the webpage.
+ <div style="margin:0.8rem 0;border-radius:10px;overflow:hidden;border:1.5px solid var(--pink-light);background:rgba(255,240,245,0.5);">
+                        <img src="4thl3.png" alt="JavaScript Concepts and Variables" style="width:100%;height:auto;display:block;">
+                    </div></p>
+
+                    <pre style="background:rgba(255,240,245,0.8);border:1.5px solid var(--pink-light);border-radius:10px;padding:1rem;font-size:0.82rem;overflow-x:auto;line-height:1.6;color:var(--purple);margin:0.8rem 0;">&lt;html&gt;
+&lt;head&gt;
+&lt;script&gt;
+document.write("Hello World");
+&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+This is the webpage content.
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+                    <p><strong>Description:</strong> This lesson discusses the main characteristics and concepts of JavaScript. It explains that JavaScript is an interpreted, scripting, client-side language used to make webpages interactive. The lesson also introduces objects, methods, properties, events, and variables — the fundamental building blocks of JavaScript programming.</p>
+                    <p><strong>What I Learned:</strong> JavaScript is an interpreted language that runs in the browser. It uses objects, methods, and properties. Variables store data that can change. Different data types exist: <strong>String, Integer, Float, Boolean,</strong> and <strong>Object</strong>. JavaScript syntax rules must be followed carefully to avoid errors.</p>
+                </div>
+
+                <!-- Lesson 4 -->
+                <div class="card">
+                    <div class="card-title">📝 Lesson 4 — Events, Popup Boxes, and Operators</div>
+                    <p><strong>Browser Output:</strong> When the button is clicked, a popup alert message appears saying <em>"WARNING! WARNING!"</em>
+  <div style="margin:0.8rem 0;border-radius:10px;overflow:hidden;border:1.5px solid var(--pink-light);background:rgba(255,240,245,0.5);">
+                        <img src="4thl4.png" alt="Events, Popup Boxes, and Operators" style="width:100%;height:auto;display:block;">
+                    </div></p>
+</p>
+                    <pre style="background:rgba(255,240,245,0.8);border:1.5px solid var(--pink-light);border-radius:10px;padding:1rem;font-size:0.82rem;overflow-x:auto;line-height:1.6;color:var(--purple);margin:0.8rem 0;">&lt;html&gt;
+&lt;head&gt;
+&lt;script&gt;
+function showAlert(){
+   alert("WARNING! WARNING!");
+}
+&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;input type="button" value="Show Alert" onclick="showAlert()"&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+                    <p><strong>Description:</strong> This lesson explains JavaScript events and user interaction. Events occur when users interact with a webpage — clicking a button, pressing a key, or loading a page. The lesson also introduces popup boxes (alert, prompt, confirm), variables, operators, and conditional statements used to control how programs behave.</p>
+                    <p><strong>What I Learned:</strong> Events allow webpages to respond to user actions like <strong>onclick, onload, onmouseover,</strong> and <strong>onkeydown</strong>. JavaScript popup boxes include the <strong>Alert Box</strong> (displays a message), <strong>Prompt Box</strong> (asks for user input), and <strong>Confirm Box</strong> (asks for confirmation). Operators perform calculations, and conditional statements like <strong>if, if-else,</strong> and <strong>switch</strong> control program decisions.</p>
+                </div>
+
+            </div>
+
+            <!-- Q4 Events -->
+            <div class="sub-pane" id="q4-events">
+                <div class="card card-gold" style="margin-top:2rem;">
+                    <div class="card-title">🎊 4th Quarter Events</div>
+                
+                </div>
+
+                 <div class="card">
+                    <div class="card-title"> Battle of the bands </div>
+                    <details>
+                        <summary class="discover-btn">🔓 View Event Details</summary>
+                        <div class="treasure-msg">
+                            <div class="media-container">
+                                 <img src="PADAYON.png" alt="Battle of the bands(2)">
+                                <img src="umasaginip.png" alt="Battle of the bands(1)">
+                                 <img src="kabanata.png" alt="Battle of the bands (3)">
+                            </div>
+                           <p>📸 Photos by: Padayon's FB Page, Umasaginip's  and Kabanata's IG account</p>
+                            <p><strong>💭 Reflection:</strong> The Battle of the Bands showcased the musical talents of different students in the school. Each group performed with energy and passion, making the event very enjoyable to watch. It was inspiring to see how students expressed themselves through music and worked together as a band to deliver a great performance. The event highlighted the creativity and talent of the students and made the celebration more lively and entertaining.</p>
+                        </div>
+                    </details>
+                </div>
+
+                  <div class="card">
+                    <div class="card-title"> Miting de Avance </div>
+                    <details>
+                        <summary class="discover-btn">🔓 View Event Details</summary>
+                        <div class="treasure-msg">
+                            <div class="media-container">
+                                 <img src="mda.jpg" alt="Miting de Avance (2)">
+                                <img src="mda2.jpg" alt="Miting de Avance (1)">
+                            </div>
+                            <p>📸 Photos & videos by: Jade Imperial</p>
+                            <p><strong>💭 Reflection:</strong>The Miting de Avance allowed the candidates for the Supreme Student Learning Government to present their ideas and plans for the school. Through their speeches, I was able to understand their platforms and what they stand for. Even though I was not able to watch the debate completely, the event still helped students become more aware of the importance of choosing the right leaders. It reminded me that voting is a responsibility, even in a school setting, because leaders play an important role in representing the students.</p>
+                        </div>
+                    </details>
+                </div>
+   <div class="card">
+                    <div class="card-title"> Streetdance</div>
+                    <details>
+                        <summary class="discover-btn">🔓 View Event Details</summary>
+                        <div class="treasure-msg">
+                            <div class="media-container">
+                                 <img src="streetdance.jpg" alt="streetdance (2)">
+                                <img src="streetdance.jpg" alt="streetdance (1)">
+                            </div>
+                            <p>📸 Photos & videos by: Reese Kua, Jade Imperial</p>
+                            <p><strong>💭 Reflection:</strong>The Streetdance competition was one of the most exciting events, and I was happy to be part of it. Preparing for the performance required a lot of practice, coordination, and teamwork from everyone involved. Even though it was tiring at times, it was also a fun and memorable experience because we worked together to create a strong performance. Participating in the event made me appreciate the effort, discipline, and confidence needed to perform in front of many people.</p>
+                        </div>
+                    </details>
+                </div>
+
+
+            </div>
+
+            <!-- Q4 AP -->
+            <div class="sub-pane" id="q4-ap">
+                <h2>📚 4th Quarter Araling Panlipunan</h2>
+                <div class="card card-gold">
+                    <div class="card-title"> 9 - Family '25-'26</div>
+                    <p> Pambansang Kaunlaran, Agrikultura, Industriyalidad, Paglilingkod, Impormal na sektor, and Patakarang Panlabas.</p>
+                </div>
+
+                <div class="section-tabs" style="margin: 1rem -2rem 1.5rem; flex-wrap: wrap;">
+                    <button class="section-tab active" onclick="showAPLesson('ap-l1',this)">📗 Lesson 1</button>
+                    <button class="section-tab" onclick="showAPLesson('ap-l2',this)">📘 Lesson 2</button>
+                    <button class="section-tab" onclick="showAPLesson('ap-l3',this)">📙 Lesson 3</button>
+                    <button class="section-tab" onclick="showAPLesson('ap-l4',this)">📕 Lesson 4</button>
+                    <button class="section-tab" onclick="showAPLesson('ap-l5',this)">📒 Lesson 5</button>
+                    <button class="section-tab" onclick="showAPLesson('ap-l6',this)">📓 Lesson 6</button>
+                </div>
+
+                <!-- LESSON 1 -->
+                <div class="ap-lesson active" id="ap-l1">
+                    <div class="card card-gold"><div class="card-title">🌟 Lesson 1: Pambansang Kaunlaran</div>
+                    <p>Isang estado ng bansa kung saan tinatamasa ng mga tao mula sa pinakamababang uri ng mamamayan ang nakakamanghang pagbabago sa ekonomiya at pamumuhay.</p></div>
+                    <div class="card"><div class="card-title">💡 Mga Konsepto ng Pambansang Kaunlaran</div>
+                    <p><strong>1. Pagbabago</strong> — Paraan upang maging iba o naiiba; Proseso ng pag-iiba o pagkakaroon ng kaibahan sa lipunan at ekonomiya.</p>
+                    <p><strong>2. Pag-unlad</strong> — Pagbabago mula sa mababa tungo sa mataas na antas ng pamumuhay; pag-angat, pagsulong, o paglago sa pangkalahatang aspeto ng pamumuhay.</p>
+                    <p>○ Isang progresibo at aktibong proseso at ang pagsulong ay produkto nito <strong>(FAJARDO)</strong></p>
+                    <p>○ Ang kaunlaran ay matatamo lamang kung mapauunlad ang yaman ng buhay ng mga tao kaysa sa yaman ng ekonomiya nito <strong>(AMARTYA SEN)</strong></p>
+                    <p><strong>3. Pagsulong</strong> — Pag-usad tungo sa iyong layunin o goal; Pagpapaunlad ng kakayahan, kaalaman, at abilidad upang makasabay sa agos ng buhay.</p>
+                    <p><strong>4. Ebolusyon</strong> — Pagbabago sa mga katangian sa loob ng mahabang panahon; anuman ang unang dumating ay mas mabuti sa sinundang panahon.</p></div>
+                    <div class="card"><div class="card-title">🏗️ Mga Salik na Makatutulong sa Pagsulong ng Ekonomiya</div>
+                    <p><strong>1.</strong> Likas na yaman &nbsp; <strong>2.</strong> Yamang-tao &nbsp; <strong>3.</strong> Kapital &nbsp; <strong>4.</strong> Teknolohiya at Inobasyon</p></div>
+                    <div class="card"><div class="card-title">📊 Mga Palatandaan ng Pag-unlad</div>
+                    <p><strong>1.</strong> Makatwiran at dinamikong kaayusan ng panlipunan</p>
+                    <p><strong>2.</strong> Kasaganaan at kasarinlan</p>
+                    <p><strong>3.</strong> Kalayaan sa kahirapan, hanapbuhay para sa lahat, umaangat na istandard ng pamumuhay, at mainam na uri ng buhay para sa lahat</p>
+                    <p><strong>4.</strong> Sapat na mga lingkurang panlipunan</p>
+                    <p><strong>5.</strong> Katarungang panlipunan</p></div>
+                    <div class="card"><div class="card-title">🔄 Dalawang Konsepto ng Pag-unlad <em>(Todaro &amp; Smith, 2012)</em></div>
+                    <p><strong>Tradisyunal:</strong> Pagtamo ng patuloy na pagtaas ng income per capita.</p>
+                    <p><strong>Makabago:</strong> Dapat na kumakatawan sa malawakang pagbabago sa buong sistemang panlipunan.</p></div>
+                    <div class="card"><div class="card-title">🌐 Sukatan ng Kaunlaran ng Bansa ayon sa United Nations</div>
+                    <p>Maliban sa GDP at GNP, ginagamit ang <strong>Human Development Index (HDI)</strong> — Pangkalahatang sukat ng kakayahan ng isang bansa na matugunan ang mahahalagang aspekto ng kaunlarang pantao. Kabilang dito ang kalusugan, edukasyon, at antas ng pamumuhay.</p></div>
+                    <div class="card"><div class="card-title">🏳️ Antas ng Kaunlaran ng Bansa</div>
+                    <p><strong>Maunlad na Bansa (Developed Economies)</strong> — Mataas na GDP, income per capita, at HDI.</p>
+                    <p><strong>Umuunlad na Bansa (Developing Economies)</strong> — May mga industriyang kasalukuyang pinauunlad ngunit wala pang mataas na antas ng industriyalisasyon; hindi pantay ang GDP at HDI.</p>
+                    <p><strong>Papaunlad na Bansa (Underdeveloped Economies)</strong> — Kulang sa industriyalisasyon; mababang antas ng agrikultura at mababang GDP, income per capita, at HDI.</p></div>
+                    <div class="card"><div class="card-title">✅ Mga Tungkulin para sa Pag-unlad ng Bansa</div>
+                    <p><strong>1.</strong> Suportahan ang ating pamahalaan. &nbsp;<strong>2.</strong> Sundin at igalang ang batas. &nbsp;<strong>3.</strong> Alagaan ang ating kapaligiran.</p>
+                    <p><strong>4.</strong> Tumulong sa pagpuksa sa korapsyon at katiwalian sa pamahalaan. &nbsp;<strong>5.</strong> Maging produktibo.</p>
+                    <p><strong>6.</strong> Tangkilikin ang mga produktong Pilipino. &nbsp;<strong>7.</strong> Magtipid ng enerhiya. &nbsp;<strong>8.</strong> Makilahok sa mga gawaing pansibiko.</p></div>
+                    <div class="card"><div class="card-title">👥 Mga Gampanin ng Mamamayan sa Pag-unlad ng Bansa</div>
+                    <p><strong>1. Mapanagutan</strong> — Tamang pagbabayad ng buwis; makialam.</p>
+                    <p><strong>2. Maabilidad</strong> — Bumuo o sumali sa kooperatiba; pagnenegosyo.</p>
+                    <p><strong>3. Maalam</strong> — Tamang pagboto; pagpapatupad at pakikilahok sa mga proyektong pangkaunlaran sa komunidad.</p>
+                    <p><strong>4. Makabansa</strong> — Pakikilahok sa pamamahala ng bansa (participative governance); pagtangkilik sa mga produktong Pilipino.</p></div>
+                </div>
+
+                <!-- LESSON 2 -->
+                <div class="ap-lesson" id="ap-l2">
+                    <div class="card card-gold"><div class="card-title">🌾 Lesson 2: Sektor ng Agrikultura</div>
+                    <p>Isang agham at sining na may kinalaman sa pagpaparami ng mga hayop at mga tanim o halaman. Ito ay may kaugnayan sa lahat ng gawain na sangkot ang mga hayop at halaman.</p>
+                    <p><em>AGER = Lupa &nbsp;|&nbsp; CULTURA = Paglilinang</em></p></div>
+                    <div class="card"><div class="card-title">🌿 Mga Gawain sa Sektor ng Agrikultura</div>
+                    <p><strong>● Pagsasaka</strong> — Pangunahing pananim: palay, mais, niyog, tubo, saging, pinya, atbp. Tinatayang umabot ng ₱797.731 bilyon ang kita mula sa pagsasaka.</p>
+                    <p><strong>● Pangingisda</strong> — Nauuri sa tatlo: komersiyal, munisipal, at aquaculture. Kasama rin ang panghuhuli ng hipon, sugpo.</p>
+                    <p><strong>● Paghahayupan</strong> — May kinalaman sa mga hayop na itinaas para sa karne, hibla, gatas, itlog, atbp. Kasama rito ang pang-araw-araw na pangangalaga, pumipili ng pag-aanak at pagpapalaki ng mga hayop.</p>
+                    <p><strong>● Paggugubat/Pagtotroso</strong> — Patuloy na nililinang ang ating mga kagubatan. Pinagkukunan ng: plywood, tabla, troso, at veneer. Pinagkakakitaan din ang rattan, nipa, anahaw, kawayan, atbp.</p></div>
+                    <div class="card"><div class="card-title">💎 Kahalagahan ng Agrikultura</div>
+                    <p><strong>1.</strong> Pinagmumulan ng pagkain &nbsp; <strong>2.</strong> Pinagkukunan ng hilaw na materyales upang makabuo ng panibagong produkto</p>
+                    <p><strong>3.</strong> Nagkakaloob ng trabaho sa maraming Pilipino &nbsp; <strong>4.</strong> Nagpapasok ng dolyar sa ating bansa</p>
+                    <p><strong>5.</strong> Pinagkukunan ng sobrang manggagawa patungo sa ibang sektor ng ekonomiya</p></div>
+                    <div class="card"><div class="card-title">⚠️ Suliranin ng Agrikultura</div>
+                    <p><strong>Pagsasaka:</strong> pagliit ng lupang sakahan, paggamit ng makabagong teknolohiya, kakulangan ng mga pasilidad at imprastraktura sa kabukiran, kakulangan ng suporta mula sa iba pang sektor, pagbibigay prayoridad sa sektor ng industriya, pagdagsa ng dayuhang kalakal, Climate Change.</p>
+                    <p><strong>Pangingisda:</strong> mapanirang operasyon ng malalaking komersiyal na mangingisda, epekto ng polusyon sa pangisdaan, lumalaking populasyon ng bansa, kahirapan sa hanay ng mga mangingisda.</p>
+                    <p><strong>Paghahayupan:</strong> pagkakaroon ng mga peste sa alagang hayop tulad ng baboy at manok.</p>
+                    <p><strong>Paggugubat:</strong> mabilis na pagkaubos ng mga likas na yaman.</p></div>
+                    <div class="card"><div class="card-title">📜 Mga Patakaran at Programa sa Agrikultura</div>
+                    <p><strong>Bago Colonized:</strong> Ang mga sinaunang Pilipino ay nakakapag-may-ari ng lupa sa pamamagitan ng pagiging unang nagtayo ng bahay. Wala pang titulo/rights noon — ang pinagbabasehan lamang ay salita ng bawat isa.</p>
+                    <p><strong>Panahon ng Kastila — Encomienda System:</strong> Lupa bilang gantimpala sa matapat na naglilingkod sa hari ng Espanya at mga tumulong sa pananakop.</p>
+                    <p><strong>Panahon ng Amerikano:</strong> Binili ang 160,000 hectares ng lupa mula sa mga prayle para sa mga magsasaka.</p>
+                    <p>○ <strong>Land Registration Act ng 1902</strong> — Sistemang Torrens; nagkaroon ng mga titulo ng lupa.</p>
+                    <p>○ <strong>Public Land Act ng 1902</strong> — Pamamahagi ng lupaing pampubliko sa mga pamilyang nagbubungkal.</p>
+                    <p><strong>Panahon ng Kasarinlan:</strong></p>
+                    <p>○ <strong>B.R. Blg. 1160</strong> — Nagtatag sa NARRA (National Resettlement and Rehabilitation Administration).</p>
+                    <p>○ <strong>B.R. Blg. 1190 ng 1954</strong> — Proteksyon laban sa mapang-abuso na may-ari ng lupa; laban sa Absentee Landlord.</p>
+                    <p>○ <strong>Agricultural Land Reform Code of 1963</strong> — Nagpalaya sa mabigat na trabaho ng magsasaka; nilagdaan ni Diosdado Macapagal noong Agosto 8, 1963.</p>
+                    <p>○ <strong>Atas ng Pangulo Blg. 2 ng 1972</strong> — Isailalim sa reporma sa lupa ang buong Pilipinas noong panahon ni Marcos.</p>
+                    <p>○ <strong>Atas ng Pangulo Blg. 27</strong> — Bibilhin ng pamahalaan ang mga lupang sakahan na taniman ng palay/mais na lampas sa 7 ektaryang limitasyon at ipamamahagi sa mga magsasakang walang lupa.</p>
+                    <p>○ <strong>B.R. Blg. 6657 ng 1988 (CARL)</strong> — "Comprehensive Agrarian Reform Law" na inaprubahan ni Corazon Aquino noong Hunyo 10, 1988. Ipinamamahagi ang lahat ng lupang agrikultural anuman ang tanim nito sa mga walang lupang magsasaka.</p></div>
+                    <div class="card"><div class="card-title">🏠 Hindi Sakop ng CARP</div>
+                    <p>Liwasan at parke, mga gubat at reforestation area, mga palaisdaan, tanggulang pambansa, paaralan, simbahan, sementeryo, templyo, watershed, atbp.</p></div>
+                    <div class="card"><div class="card-title">🏗️ Mga Naisakatuparan ng CARP (2003)</div>
+                    <p><strong>1.</strong> Pagtatayo ng bahay-ugnayan (bagsakan) para sa mga magsasaka.</p>
+                    <p><strong>2.</strong> Pagtatayo ng gulayan para sa mga magsasaka.</p>
+                    <p><strong>3.</strong> Pagsisiguro na ang mga anak ng mga magsasaka ay makapag-aral — itinatag ang Pangulong Diosdado Macapagal Agrarian Reform Scholarship Program.</p>
+                    <p><strong>4.</strong> Kalahi agrarian reform zones.</p></div>
+                    <div class="card"><div class="card-title">🐟 Iba pang Programa at Ahensya</div>
+                    <p><strong>Pangingisda:</strong> Pagtatayo ng mga daungan; Philippine Fisheries Code of 1998; Fishery Research.</p>
+                    <p><strong>Pagtotroso:</strong> CLASP, NIPAS (National Integrated Protected Areas System), Sustainable Forest Management Strategy.</p>
+                    <p><strong>Landbank of the Philippines</strong> — Upang magkaroon ng kaagapay ang mga magsasaka sa pagpapaunlad ng kanilang kabuhayan.</p>
+                    <p><strong>DA</strong> — Gumagabay sa mga magsasaka ukol sa makabagong teknolohiya. &nbsp;<strong>BFAR</strong> — Paunlarin ang pangingisda. &nbsp;<strong>BAI</strong> — Paghahayupan. &nbsp;<strong>ERDB</strong> — Pananaliksik sa ecosystem.</p></div>
+                </div>
+
+                <!-- LESSON 3 -->
+                <div class="ap-lesson" id="ap-l3">
+                    <div class="card card-gold"><div class="card-title">🏭 Lesson 3: Sektor ng Industriya</div>
+                    <p>Tumutukoy sa pagproseso ng mga hilaw na materyal at paggawa ng mga produkto na kinakailangan para sa pampublikong pamilihan. Naglalayong maiproseso ang mga hilaw na materyal upang makabuo ng produkto na ginagamit ng tao.</p></div>
+                    <div class="card"><div class="card-title">🔧 Sub-Sektor ng Industriya</div>
+                    <p><strong>1. Pagmimina (Mining)</strong> — Pagkuha at pagproseso ng mga yamang mineral (metal, di-metal, o enerhiya) upang gawing tapos na produkto. Ang mismong produkto, hilaw man o naproseso, ay nagbibigay ng kita para sa bansa.</p>
+                    <p><strong>2. Pagmamanupaktura (Manufacturing)</strong> — Paggawa ng mga produkto sa pamamagitan ng manual labor o ng mga makina. Nagkakaroon ng pisikal o kemikal na transpormasyon ang mga materyal sa pagbuo ng mga bagong produkto.</p>
+                    <p><strong>3. Konstruksyon (Construction)</strong> — Pagtatayo ng mga gusali, estruktura, at iba pang land improvements.</p>
+                    <p><strong>4. Utilities</strong> — Pagtugon ng mga pangunahing pangangailangan ng mga mamamayan tulad ng tubig, kuryente, at gas. Paglalatag ng mga imprastraktura at angkop na teknolohiya upang maihatid ang serbisyo.</p></div>
+                    <div class="card"><div class="card-title">💡 Kahalagahan ng Sektor ng Industriya</div>
+                    <p><strong>1.</strong> Tumatanggap ng mga produkto mula sa sektor ng agrikultura at ng serbisyo mula sa sektor ng paglilingkod.</p>
+                    <p><strong>2.</strong> Nagkakaloob ng hanapbuhay sa maraming Pilipino. &nbsp;<strong>3.</strong> Nagpapasok ng dolyar sa bansa.</p>
+                    <p><strong>4.</strong> Nakagagamit ng makabagong Teknolohiya.</p>
+                    <p><strong>5.</strong> Gumagawa ng mga intermediate products — mga materyales o produkto na ginagamit sa paggawa ng iba pang produkto (hal. wheat → to make bread).</p></div>
+                    <div class="card"><div class="card-title">🔗 Pagkakaugnay ng Agrikultura at Industriya</div>
+                    <p>● Nagmumula sa agrikultura ang mga hilaw na sangkap na ginagamit sa pagbuo ng mga produkto ng industriya.</p>
+                    <p>● Ang mga traktora, sasakyang pangingisda, at iba pang produkto ay mula sa industriya na ginagamit ng mga magsasaka upang magkaroon ng mataas na produksyon.</p>
+                    <p>● Ang dami ng lakas-paggawa ay nagpapakita ng lubos na pagtutulungan sa mga sektor ng industriya at agrikultura.</p>
+                    <p>● Ang agrikultura ang pinagmumulan ng pagkain ng mga industriya na siyang tumutugon sa mga pagkaing kinakailangan ng mga tao.</p>
+                    <p>● Ang industriya ang nagbibigay ng malaking kontribusyon sa ekonomiya.</p>
+                    <p>● Ang mga sangkap ay nagkakaroon ng transpormasyon dahil sa mga lakas-paggawa upang madagdagan ang halaga nito at lalo pang gumanda.</p></div>
+                    <div class="card"><div class="card-title">⚠️ Suliranin ng Industriya</div>
+                    <p><strong>1.</strong> Pondo at kompetisyon &nbsp; <strong>2.</strong> Paghina ng lokal na industriya &nbsp; <strong>3.</strong> Demand</p></div>
+                    <div class="card"><div class="card-title">📜 Mga Patakarang Pang-Ekonomiya</div>
+                    <p><strong>Filipino First Policy</strong> — Programang Filipino Muna ni Pangulong Carlos P. Garcia. Naglalayong bigyan ng higit na malaking partisipasyon ang mga Pilipino sa pagpapatakbo ng ekonomiya.</p>
+                    <p><strong>Oil Deregulation Law (R.A. 8479)</strong> — Nagbukas ng kompetisyon sa industriya ng langis. Ang pamilihan ang nagdidikta sa presyo ng petrolyo.</p>
+                    <p><strong>Patakaran ng Microfinancing</strong> — Serbisyong pinansiyal na magpautang na mayroong mababang interes sa mahihirap na pamilya.</p>
+                    <p><strong>Patakaran sa Online Business</strong> — Online shopping o retailing, online intermediary service, online advertisement o classified ads, online auction.</p>
+                    <p><strong>Retail Nationalization Act of 1964 (R.A. 1180)</strong> — Sampung taong palugit sa mga dayuhang capitalist. Pilipino na may korporasyon o asosasyon lamang ang nasa kalakalang pagtitingi.</p>
+                    <p><strong>Retail Trade Liberalization Act of 2000 (R.A. 8762)</strong> — Nagpawalang-bisa sa RA 1180. Binuksan ang kalakalang pagtitingi sa mga dayuhan.</p>
+                    <p><strong>Build-Operate-Transfer (BOT) (R.A. 6957)</strong> — Binibigyan ng karapatang bumuo ng mga pasilidad sa kanilang mga sariling pondo at palakarin ito sa humigit-kumulang na 25 taon.</p>
+                    <p><strong>Asset Privatization Trust (APT)</strong> — Itinatag upang mapangasiwaan ang pagbebenta ng mga korporasyong pagmamay-ari ng pamahalaan sa pribadong pagmamay-ari. Pinasimula ni Corazon Aquino.</p></div>
+                    <div class="card"><div class="card-title">🏛️ Sangay ng Pamahalaan na Tumutulong sa Industriya</div>
+                    <p><strong>DTI</strong> — Tuwirang tumitingin at nangangalaga sa larangan ng industriya at pangangalakal.</p>
+                    <p><strong>BOI</strong> — Tinutulungan ang mga nagsisimulang industriya at humihikayat sa mga dayuhang mamumuhunan.</p>
+                    <p><strong>PEZA</strong> — Tumutulong sa mga namumuhunan na maghanap ng lugar upang pagtayuan ng negosyo.</p>
+                    <p><strong>SEC</strong> — Nagtatala at nagrerehistro sa mga kompanya sa bansa.</p>
+                    <p><em>Industriyalisasyon: paggamit ng mga makinarya at makabagong kagamitan sa paglinang ng mga industriya. Sekundaryang sektor ang kumakatawan sa industriya.</em></p></div>
+                </div>
+
+      
+                <div class="ap-lesson" id="ap-l4">
+                    <div class="card card-gold"><div class="card-title">🛎️ Lesson 4: Sektor ng Paglilingkod</div>
+                    <p>Ang umaalalay sa buong yugto ng produksyon, distribusyon, kalakalan, at pagkonsumo ng mga produkto sa loob o labas ng bansa. Kilala rin ito bilang <strong>tersarya o ikatlong sektor ng ekonomiya</strong> matapos ang agrikultura at industriya.</p></div>
+                    <div class="card"><div class="card-title">📋 Pormal na Sektor sa Ilalim ng Paglilingkod</div>
+                    <p><strong>● Transportasyon, Komunikasyon, at mga Imbakan</strong> — Mga serbisyong pampublikong sasakyan, mga paglilingkod ng telepono at mga pinapaupahang bodega.</p>
+                    <p><strong>● Kalakalan</strong> — Pagpapalitan ng iba't-ibang produkto at serbisyo.</p>
+                    <p><strong>● Pananalapi</strong> — Serbisyong may kinalaman sa bangko, insurance, at pamumuhunan. Nagbibigay ng tulong pinansyal gaya ng mga bangko, bahay-sanglaan, atbp.</p>
+                    <p><strong>● Paupahang Bahay at Real Estate</strong> — Mga paupahan tulad ng mga apartment, subdivision developer, town house, at condominium.</p>
+                    <p><strong>● Paglilingkod ng Pampribado</strong> — Lahat ng mga paglilingkod na nagmumula sa pribadong sektor.</p>
+                    <p><strong>● Paglilingkod ng Pampubliko</strong> — Lahat ng paglilingkod na ipinagkakaloob ng pamahalaan.</p></div>
+                    <div class="card"><div class="card-title">🏛️ Mga Ahensyang Tumutulong sa Sektor ng Paglilingkod</div>
+                    <p><strong>DOLE</strong> — Pangangalaga sa kapakanan ng mga manggagawang Pilipino, pagtataguyod ng maayos na oportunidad sa trabaho.</p>
+                    <p><strong>OWWA</strong> — Tumitingin sa kapakanan ng mga Overseas Filipino Workers.</p>
+                    <p><strong>POEA</strong> — Isulong at paunlarin ang mga programa ukol sa paghahanapbuhay sa ibayong-dagat. Itinatag sa bisa ng Executive Order 797 (1982).</p>
+                    <p><strong>TESDA</strong> — Hikayatin ang buong partisipasyon ng industriya, paggawa, at mga institusyong teknikal at bokasyonal upang sanayin at paunlarin ang kasanayan ng mga manggagawa. Itinatag sa bisa ng R.A. 7796 (1994).</p>
+                    <p><strong>PRC</strong> — Nangangasiwa at sumusubaybay sa gawain ng mga manggagawang propesyonal upang matiyak ang kahusayan sa paghahatid ng mga serbisyong propesyonal sa bansa.</p>
+                    <p><strong>CHED</strong> — Nangangasiwa sa gawain ng mga pamantasan at kolehiyo sa bansa upang maitaas ang kalidad ng edukasyon sa mataas na antas.</p></div>
+                    <div class="card"><div class="card-title">⚖️ Mga Batas na Nangangalaga sa Karapatan ng Manggagawa</div>
+                    <p><strong>Artikulo 94 — Holiday Pay</strong> — Bayad ng isang manggagawa na katumbas ng isang araw na sahod kahit hindi pumasok sa araw ng pista opisyal.</p>
+                    <p><strong>R.A. 6727 — Wage Rationalization Act</strong> — Nagsaad ng mga mandato para sa pagsasaayos ng pinakamababang pasahod o minimum wage.</p>
+                    <p><strong>Artikulo 91-93 — Premium Pay</strong> — Karagdagang bayad sa manggagawa sa loob ng walong oras na trabaho sa araw ng pahinga at special days.</p>
+                    <p><strong>Artikulo 87 — Overtime Pay</strong> — Karagdagang bayad sa pagtatrabaho na lampas sa 8 oras sa isang araw.</p>
+                    <p><strong>Artikulo 86 — Night Shift Differential</strong> — Karagdagang bayad sa pagtatrabaho sa gabi na hindi bababa sa 10% ng kanyang regular na sahod sa bawat oras na ipinagtrabaho sa pagitan ng 10PM–6AM.</p>
+                    <p><strong>Artikulo 96 — Service Charges</strong> — Lahat ng manggagawa sa isang establishment na kumokolekta ng service charges ay may karapatan sa isang pantay o tamang bahagi sa 85% na kabuuang koleksiyon.</p>
+                    <p><strong>Artikulo 95 — Service Incentive Leave</strong> — Bawat manggagawa na naglilingkod nang hindi kukulangin sa isang taon ay dapat magkaroon ng karapatan sa taunang service incentive leave ng limang araw na may bayad.</p>
+                    <p><strong>R.A. 1161 — Maternity Leave</strong> — Ang bawat nagdadalang-taong manggagawa sa pribadong sektor, kasal man o hindi, ay makakatanggap ng maternity leave na katumbas ng humigit kumulang 100% na araw ng sahod.</p>
+                    <p><strong>R.A. 8972 — Paternity Leave para sa mga solong magulang</strong> — Ipinagkaloob sa sinumang solong magulang o indibidwal na napag-iwanan ng responsibilidad ng pagiging magulang.</p>
+                    <p><strong>R.A. 8187 — Paternity Leave</strong> — Maaaring magamit ng empleyadong lalaki sa unang apat na araw mula nang manganak ang legal na asawa na kaniyang kapisan. (Pakikipagpisan: obligasyon ng asawang babae at asawang lalaki na magsama sa isang bubong)</p>
+                    <p><strong>Presidential Decree 851 — Thirteenth Month Pay</strong> — Nagbibigay sa mga empleyado nang hindi lalagpas ng ika-24 ng Disyembre bawat taon.</p>
+                    <p><strong>Presidential Decree 626 — Benepisyo sa Employees Compensation Program</strong> — Isang compensation package sa mga manggagawa sa pampubliko at pambribadong sektor sakaling may kaganapang pagkakasakit na may kaugnayan sa trabaho.</p></div>
+                    <div class="card"><div class="card-title">💡 Kahalagahan at Karagdagang Impormasyon</div>
+                    <p>● Tinitiyak na makakarating sa mga mamimili ang mga produkto mula sa mga sakahan o pagawaan.</p>
+                    <p>● Nagbibigay ng trabaho sa mga mamamayan. &nbsp;● Tinitiyak ang maayos na pag-iimbak at pagtitinda ng kalakal.</p>
+                    <p>● Nagpapataas ng GDP ng bansa. &nbsp;● Nagpapasok ng dolyar sa bansa.</p>
+                    <p><strong>Article 13, Section 3:</strong> Dapat magkaloob ang estado ng lubos na proteksyon sa paggawa, lokal at sa ibang bansa, at dapat itaguyod ang puspusang empleyo at pantay na mga pagkakataon sa trabaho para sa lahat.</p>
+                    <p><strong>Karl Marx:</strong> ang mga manggagawa ang tunay na prodyuser ng bansa.</p>
+                    <p><strong>Kontraktuwalisasyon:</strong> ang isang manggagawa ay nakatali sa kontrata ng 5 buwan lamang; kapag natapos ay kinakailangan nang umalis sa pinagtatrabahuhan.</p>
+                    <p><strong>Brain Drain:</strong> pagkaubos ng mga manggagawa patungo sa ibang bansa. &nbsp;| <em>8 oras ang regular working hours.</em></p></div>
+                </div>
+
+                <!-- LESSON 5 -->
+                <div class="ap-lesson" id="ap-l5">
+                    <div class="card card-gold"><div class="card-title">🏪 Lesson 5: Impormal na Sektor</div>
+                    <p>Sektor ng ekonomiya na <strong>walang pormal o salat sa mga dokumentong kailangan</strong> sa pagsasagawa ng gawaing pang-ekonomiya. Ang kita ng sektor na ito ay <strong>HINDI</strong> naisasama sa kabuuang GDP ng bansa. Nagsisilbing paraan ng mamamayan upang magkaroon ng kabuhayan/dagdag kita sa tuwing panahon ng pangangailangan. Kilala rin bilang <strong>Underground Economy</strong>.</p></div>
+                    <div class="card"><div class="card-title">👤 Halimbawa ng mga Taong Kabilang sa Sektor na Ito</div>
+                    <p><strong>1.</strong> Nagtitinda sa kalsada &nbsp;<strong>2.</strong> Pedicab driver &nbsp;<strong>3.</strong> Karpintero &nbsp;<strong>4.</strong> Hindi rehistradong pampublikong sasakyan</p></div>
+                    <div class="card"><div class="card-title">📋 Katangian ng Impormal na Sektor</div>
+                    <p><strong>1.</strong> Hindi nakarehistro sa pamahalaan</p>
+                    <p><strong>2.</strong> Hindi nagbabayad ng buwis mula sa kinita</p>
+                    <p><strong>3.</strong> Walang legal at pormal na balangkas mula sa pamahalaan para sa pagnenegosyo</p></div>
+                    <div class="card"><div class="card-title">🗂️ Iba't Ibang Anyo ng Impormal na Sektor</div>
+                    <p><strong>1.</strong> Mga gawaing maaaring isakatuparan lamang sa loob ng tahanan</p>
+                    <p><strong>2.</strong> Mga gawaing pansibiko, pagkakawanggawa, at panrelihiyon</p>
+                    <p><strong>3.</strong> Mga sari-sari stores, pagtitinda sa labas ng bahay o sidewalk, paglalako ng kalakal o serbisyo</p>
+                    <p><strong>4.</strong> Ilegal na gawain tulad ng pagnanakaw, pagbebenta ng ilegal na gamot, piracy, at prostitusyon</p></div>
+                    <div class="card"><div class="card-title">💎 Kahalagahan ng Impormal na Sektor</div>
+                    <p><strong>1.</strong> Sinasalo nito ang mga mamamayan na hindi makapasok bilang mga regular na empleyado sa isang kompanya.</p>
+                    <p><strong>2.</strong> Nagbibigay ng pagkakataon sa maraming Pilipino na makapaghanapbuhay.</p>
+                    <p><strong>3.</strong> Nagsisilbing tagasalo ng mga mamamayang may mahigpit na pangangailangan.</p>
+                    <p><strong>4.</strong> Malaki ang naitutulong sa mga konsyumer ang mga kalakal at serbisyo mula sa impormal na sektor dahil sa MURA nitong halaga.</p></div>
+                    <div class="card"><div class="card-title">❓ Dahilan kung Bakit Pumapasok sa Impormal na Sektor</div>
+                    <p><strong>1.</strong> Makaligtas sa pagbabayad ng buwis sa pamahalaan</p>
+                    <p><strong>2.</strong> Makaiwas sa masyadong mahaba at masalimuot na proseso ng pakikipagtransaksyon sa pamahalaan (bureaucratic red tape)</p>
+                    <p><strong>3.</strong> Kawalan ng regulasyon mula sa pamahalaan na kung saan ang mga batas at programa ay hindi naitutupad nang maayos</p>
+                    <p><strong>4.</strong> Makapaghanapbuhay nang hindi nangangailangan ng malaking kapital o puhunan</p>
+                    <p><strong>5.</strong> Malabanan ang matinding kahirapan</p></div>
+                    <div class="card"><div class="card-title">⚠️ Epekto sa Ekonomiya ng Impormal na Sektor</div>
+                    <p><strong>1.</strong> Pagbaba ng halaga ng nalilikom na buwis</p>
+                    <p><strong>2.</strong> Banta sa kapakanan ng mga mamimili</p>
+                    <p><strong>3.</strong> Paglaganap ng mga ilegal na gawain</p></div>
+                    <div class="card"><div class="card-title">📜 Mga Batas, Programa, at Patakaran sa Impormal na Sektor</div>
+                    <p><strong>R.A. 8425 — Social Reform and Poverty Alleviation Act of 1997</strong> — Iahon sa kahirapan ang mga Pilipinong kabilang sa impormal na sektor. Itinatag ang National Anti-Poverty Commission.</p>
+                    <p><strong>R.A. 9710 — Magna Carta of Women</strong> — Inaalis ang lahat ng uri ng diskriminasyon laban sa kababaihan.</p>
+                    <p><strong>P.D. 422 — Philippine Labor Code</strong> — Pangunahing batas ng bansa para sa mga manggagawa na itinatag noong Mayo 1, 1974.</p>
+                    <p><strong>R.A. 7796 — Technical Education and Skills Development Act of 1994</strong> — Layuning palakasin ang pakikiisa ng iba't ibang sektor upang mapabuti ang kasanayan at kalidad ng yamang tao sa bansa.</p>
+                    <p><strong>R.A. 8282 — Social Security Act of 1997</strong> — Nagtatakda ng tungkulin ng estado na paunlarin at pangalagaan ang seguridad at kagalingang panlipunan ng mga manggagawa.</p>
+                    <p><strong>R.A. 7875 — National Health Insurance Act of 1995</strong> — Nagtatag ng PhilHealth upang matiyak na may maayos at sistematikong kaseguruhang pangkalusugan ang lahat ng Pilipino.</p></div>
+                    <div class="card"><div class="card-title">🤝 Mga Programa para sa Mamamayan</div>
+                    <p><strong>DILP (Dole Integrated Livelihood Program)</strong> — Nagbibigay ng pagsasanay at tulong pangkabuhayan para sa sariling hanapbuhay.</p>
+                    <p><strong>SEA-K (Self-Employment Assistance Kaunlaran Program)</strong> — Tumutulong sa mahihirap na pamilya sa pagsasanay at pagsisimula ng negosyo.</p>
+                    <p><strong>ISLA (Integrated Services for Livelihood Advancement of the Fisherfolks)</strong> — Nagbibigay ng suporta sa pamamagitan ng pagsasanay at pagkakaloob ng kagamitan upang mapaunlad ang kanilang hanapbuhay.</p>
+                    <p><strong>CWP (Cash-For-Work Program)</strong> — Pansamantalang kita para sa nasalanta, kapalit ng trabahong pang-rehabilitasyon.</p>
+                    <p><strong>4Ps (Pantawid Pamilyang Pilipino Program)</strong> — Tulong-pinansyal sa pinakamahihirap na Pilipino kapalit ng pagsunod sa mga kondisyong pangkalusugan at pang-edukasyon ng kanilang mga anak.</p></div>
+                </div>
+
+                <!-- LESSON 6 -->
+                <div class="ap-lesson" id="ap-l6">
+                    <div class="card card-gold"><div class="card-title">🌏 Lesson 6: Patakarang Panlabas (Kalakalang Panlabas)</div>
+                    <p>Palitan ng produkto at serbisyo sa pagitan ng mga bansa. Nagaganap sapagkat <strong>walang bansa ang maaaring makatugon sa lahat ng kanyang pangangailangan</strong> ng walang tulong mula sa ibang bansa.</p>
+                    <p><em>Bilateral: 2 bansa (hal. U.S at PH) &nbsp;|&nbsp; Bloc: Organisasyon at 1 bansa (hal. APEC at PH)</em></p></div>
+                    <div class="card"><div class="card-title">📦 Export at Import</div>
+                    <p><strong>EKSPORT (Pagluluwas)</strong> — Pagpapadala ng mga produkto at serbisyo sa ibang bansa.</p>
+                    <p><strong>IMPORT (Pag-aangkat)</strong> — Pagbili ng kalakal mula sa ibang bansa.</p></div>
+                    <div class="card"><div class="card-title">❓ Dahilan ng Kalakalang Panlabas</div>
+                    <p><strong>1.</strong> Pagkakaiba ng Teknolohiya &nbsp;<strong>2.</strong> Pagkakaiba sa Pinagkukunang Yaman</p>
+                    <p><strong>3.</strong> Pagkakaiba sa Panlasa &nbsp;<strong>4.</strong> Pagkakaiba sa Halaga ng Produksyon</p></div>
+                    <div class="card"><div class="card-title">📜 Patakarang Umaapekto sa Kalakalang Panlabas</div>
+                    <p><strong>A. Taripa/Tariff</strong> — Buwis sa mga produktong inaangkat. Nagpapataas ng presyo at nagpapababa ng benta ng inaangkat na produkto. Nagpapataw ng mataas na taripa upang mapigil ang pagpasok ng dayuhang produktong kalaban ng lokal na produkto.</p>
+                    <p><strong>B. Kota (Quota)</strong> — Maaaring limitahan (kotahan) ang pagpasok ng mga kalabang produkto.</p>
+                    <p><strong>C. Subsidy</strong> — Tulong na ibinibigay ng gobyerno upang bumaba ang halaga ng produksyon ng mga lokal na produkto.</p></div>
+                    <div class="card"><div class="card-title">📊 Batayan ng Kalakalang Panlabas <em>(David Ricardo)</em></div>
+                    <p><strong>Absolute Advantage</strong> — Nakakalikha ng mas maraming bilang ng produkto gamit ang mas kaunting salik ng produksyon kumpara sa ibang bansa.</p>
+                    <p><strong>Comparative Advantage</strong> — Ang bansa ay magkakaroon ng espesyalisasyon sa paglikha ng kalakal na mas efficient gawin kumpara sa ibang bansa. Hal. Cebu may comparative advantage sa pagluto ng Lechon.</p></div>
+                    <div class="card"><div class="card-title">⚖️ Balance of Trade (BOT)</div>
+                    <p>Kalagayan ng kabayaran ng pagluluwas (export) at sa pag-aangkat (import).</p>
+                    <p><strong>Trade Deficit:</strong> import &gt; export &nbsp;|&nbsp; <strong>Trade Surplus:</strong> import &lt; export</p></div>
+                    <div class="card"><div class="card-title">✅ Kabutihan ng Pakikipagkalakalan</div>
+                    <p>● Mas maraming produkto ang mapagpipilian sa pamilihan.</p>
+                    <p>● Napapataas nito ang kalidad ng mga produkto na nabibili sa pamilihan.</p>
+                    <p>● Nagkakaroon ng pagkakaunawaan ang mamamayan ng bansang nakikipagkalakalan.</p>
+                    <p>● Lumalawak ang pamilihan ng mga produkto sa bansa.</p></div>
+                    <div class="card"><div class="card-title">❌ Di-Kabutihan ng Pakikipagkalakalan</div>
+                    <p>● Nagiging palaasa ang mga mamamayan sa produktong imported.</p>
+                    <p>● Hindi nalilinang ang pagkamalikhain ng mga mamamayan dahil umaasa na lamang sila sa mga produktong gawa sa ibang bansa.</p>
+                    <p>● Pagkawala ng sariling pagkakakilanlan bunga ng pagpasok ng dayuhang kultura sa lipunan.</p></div>
+                    <div class="card"><div class="card-title">🌐 Samahang Pandaigdigang Pang-Ekonomiko</div>
+                    <p><strong>WTO (World Trade Organization)</strong> — Pinasinayaan noong Enero 1, 1995. Namamahala sa pandaigdigang sistema ng kalakalan sa pagitan ng mga kasaping estado.</p>
+                    <p><em>Layunin:</em> Pagpapababa ng trade barriers; plataporma para sa negosasyon at tulong-teknikal sa developing countries; paggamit ng trade sanction sa mga kasaping hindi sumusunod.</p>
+                    <p><strong>APEC (Asia-Pacific Economic Council)</strong> — Itinatag noong Nobyembre 1989. Isulong ang kaunlarang pang-ekonomiya at katiwasayan sa rehiyong Asia-Pacific.</p>
+                    <p><em>Layunin:</em> Liberalisasyon ng pakikipagkalakalan at pamumuhunan; pagpapabilis at pagpapadali ng pagnenegosyo; pagtutulungang pang-ekonomiya at teknikal.</p>
+                    <p><strong>ASEAN (Association of Southeast Asian Nations)</strong> — Itinatag noong August 8, 1967. Paunlarin at isulong ang malayang kalakalan sa bawat kasapi ng ASEAN.</p>
+                    <p><em>Layunin:</em> Nabuo ang ASEAN Free Trade Area (AFTA) noong January 28, 1992, sa Singapore. Nakabatay sa Common Effective Preferential Tariff (CEPT) na nag-aalis ng taripa at quota para sa mas malayang daloy ng produkto sa ASEAN.</p></div>
+                    <div class="card"><div class="card-title">🏛️ Programang Nagtataguyod sa Kalakalang Panlabas</div>
+                    <p><strong>a. Liberalisasyon sa Sektor ng Pagbabangko (R.A. 7721)</strong> — Pinapayagan ang dayuhang bangko na magtayo at magpatakbo ng sangay sa bansa.</p>
+                    <p><strong>b. Foreign Trade Services Corps (FTSC)</strong> — Nagtataguyod ng mga lokal na produkto sa pandaigdigang pamilihan sa pamamagitan ng iba't ibang estratehiya.</p>
+                    <p><strong>c. Trade and Industry Information Center (TIIC)</strong> — Nangangalap at nagpapalaganap ng datos at impormasyon tungkol sa ekonomiya, kalakalan, at industriya.</p>
+                    <p><strong>d. Center for Industrial Competitiveness</strong> — Naglulunsad ng mga programa at pagsasanay upang mapahusay ang kakayahan at produktibidad ng manggagawa.</p></div>
+                    <div class="card"><div class="card-title">📌 Karagdagang Impormasyon</div>
+                    <p><strong>Liberalisasyon</strong> — Pagtanggal ng kota at taripa sa pakikipagkalakalan.</p>
+                    <p><strong>Deregulasyon</strong> — Pagtanggal ng pakikialam ng pamahalaan sa panlabas na kalakalan.</p>
+                    <p><strong>Dolyar</strong> — Common currency sa pandaigdigang kalakalan.</p>
+                    <p><strong>Pribatisasyon</strong> — Pagbebenta ng pag-aari ng gobyerno sa mga pribadong kompanya.</p>
+                    <p><strong>Balance of Payment</strong> — Pandaigdigang batayan o sukatan para sa mga gawaing pangekonomiya; talaang nagpapakita ng transaksyon ng isang bansa sa iba't ibang bahagi ng mundo.</p>
+                    <p><strong>Dumping</strong> — Pagdagsa ng mga sobrang kalakal ng isang mas malakas na bansa tungo sa mas mahinang bansa.</p>
+                    <p><strong>Kota/Quota</strong> — Ang takdang dami ng mga produkto na maaaring iluwas sa isang bansa.</p></div>
+                </div>
+
+            </div>
+
+            <!-- Q4 Noli Drama -->
+            <div class="sub-pane" id="q4-noli">
+                <h2>🎭 Noli Me Tangere Drama Presentation</h2>
+                <div class="card card-gold">
+                    <div class="card-title">🎬 Video Presentation — Edited & Polished</div>
+                    <p>A dramatic presentation inspired by José Rizal's <em>Noli Me Tangere</em>.</p>
+                </div>
+                <div class="placeholder-card">
+                    <div class="icon">🎭</div>
+                    <h4><a href="https://drive.google.com/file/d/1S_AuxlT-YRXd7fa8oveV1gddOMZrWzBi/view?usp=drivesdk"> Noli Me Tangere Video</a></h4>
+                    <p></p>
+                </div>
+                           </div>
+        </div>
+
+    <footer>
+        <div>🌸 Morynel Joy O. Pacot — E-Portfolio 🌸</div>
+        <div class="footer-visit" id="footer-visit-info"></div>
+        <div style="font-size:0.8rem;font-family:'Lora',serif;color:var(--pink-light);margin-top:0.5rem;">Made with 💗 and lots of pink</div>
+    </footer>
+</div><!-- end main-site -->
+
+<script>
+// ============================================================
+// COOKIE SYSTEM
+// ============================================================
+
+const COOKIE_CONSENT_KEY = 'pacot_portfolio_consent';
+const VISIT_COUNT_KEY = 'pacot_visit_count';
+const LAST_QUARTER_KEY = 'pacot_last_quarter';
+const FIRST_VISIT_KEY = 'pacot_first_visit';
+
+function setCookie(name, value, days) {
+    const expires = new Date();
+    expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+    document.cookie = `${name}=${encodeURIComponent(value)};expires=${expires.toUTCString()};path=/;SameSite=Lax`;
+}
+
+function getCookie(name) {
+    const cookies = document.cookie.split(';');
+    for (let c of cookies) {
+        const [k, v] = c.trim().split('=');
+        if (k === name) return decodeURIComponent(v || '');
+    }
+    return null;
+}
+
+function deleteCookie(name) {
+    document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/`;
+}
+
+// ============================================================
+// GATE ENTRANCE
+// ============================================================
+
+function createPetals() {
+    const container = document.getElementById('petals-container');
+    const petals = ['🌸', '🌺', '🌷', '💗', '✨', '🌹'];
+    for (let i = 0; i < 20; i++) {
+        const petal = document.createElement('span');
+        petal.className = 'petal';
+        petal.textContent = petals[Math.floor(Math.random() * petals.length)];
+        petal.style.left = Math.random() * 100 + 'vw';
+        petal.style.top = '-30px';
+        petal.style.animationDuration = (3 + Math.random() * 5) + 's';
+        petal.style.animationDelay = (Math.random() * 4) + 's';
+        petal.style.fontSize = (0.8 + Math.random() * 1.2) + 'rem';
+        container.appendChild(petal);
+    }
+}
+
+function setupGate() {
+    createPetals();
+    const consent = getCookie(COOKIE_CONSENT_KEY);
+    const visitCount = parseInt(getCookie(VISIT_COUNT_KEY) || '0');
+    const lastQuarter = getCookie(LAST_QUARTER_KEY);
+    const gateInfo = document.getElementById('gate-visit-info');
+
+    if (consent === 'accepted') {
+        if (visitCount === 0) {
+            gateInfo.textContent = '🌸 First time here — welcome!';
+        } else if (visitCount === 1) {
+            gateInfo.textContent = `🌷 Welcome back! This is your 2nd visit!`;
+        } else {
+            gateInfo.textContent = `✨ Visit #${visitCount + 1} — so glad you're back!`;
+        }
+        if (lastQuarter) {
+            gateInfo.textContent += ` You were on ${lastQuarter}.`;
+        }
+    } else if (consent === 'declined') {
+        gateInfo.textContent = '🌸 Welcome to Morynel Joy\'s Portfolio!';
+    } else {
+        gateInfo.textContent = '🌸 First time here? Accept cookies to personalize your experience!';
+    }
+}
+
+function enterPortfolio() {
+    const overlay = document.getElementById('gate-overlay');
+    overlay.classList.add('swinging');
+
+    setTimeout(() => {
+        overlay.style.opacity = '0';
+        overlay.style.pointerEvents = 'none';
+        document.getElementById('main-site').classList.add('visible');
+    }, 700);
+
+    setTimeout(() => {
+        overlay.style.display = 'none';
+    }, 1500);
+
+    // Cookie logic after entering
+    const consent = getCookie(COOKIE_CONSENT_KEY);
+    if (consent === null) {
+        setTimeout(() => {
+            document.getElementById('cookie-banner').classList.add('show');
+        }, 1000);
+    } else {
+        initPortfolioWithCookies();
+    }
+}
+
+// ============================================================
+// COOKIE ACTIONS
+// ============================================================
+
+function acceptCookies() {
+    setCookie(COOKIE_CONSENT_KEY, 'accepted', 365);
+    document.getElementById('cookie-banner').classList.remove('show');
+    initPortfolioWithCookies();
+}
+
+function declineCookies() {
+    setCookie(COOKIE_CONSENT_KEY, 'declined', 365);
+    document.getElementById('cookie-banner').classList.remove('show');
+    showToast('🌸 No worries! Some features may be limited.');
+}
+
+function initPortfolioWithCookies() {
+    const consent = getCookie(COOKIE_CONSENT_KEY);
+    if (consent !== 'accepted') return;
+
+    // Visit counter
+    let visitCount = parseInt(getCookie(VISIT_COUNT_KEY) || '0');
+    const isFirstEver = !getCookie(FIRST_VISIT_KEY);
+
+    if (isFirstEver) {
+        setCookie(FIRST_VISIT_KEY, Date.now(), 365 * 5);
+        setCookie(VISIT_COUNT_KEY, '1', 365);
+        visitCount = 1;
+    } else {
+        visitCount += 1;
+        setCookie(VISIT_COUNT_KEY, String(visitCount), 365);
+    }
+
+    // Update visit counter displays
+    updateVisitDisplay(visitCount);
+
+    // Welcome toasts
+    const lastQuarter = getCookie(LAST_QUARTER_KEY);
+    setTimeout(() => showWelcomeToast(visitCount, lastQuarter), 400);
+
+    // Restore last quarter
+    if (lastQuarter) {
+        const qMatch = lastQuarter.match(/q1q2|q[3-4]/);
+        if (qMatch) {
+            const qtabs = document.querySelectorAll('.quarter-tab');
+            qtabs.forEach(t => t.classList.remove('active'));
+            const targetTab = [...qtabs].find(t => t.getAttribute('onclick')?.includes(qMatch[0]));
+            if (targetTab) {
+                targetTab.classList.add('active');
+                showQuarter(qMatch[0], targetTab, false); // don't re-save
+            }
+        }
+    }
+}
+
+function updateVisitDisplay(count) {
+    const heroEl = document.getElementById('visit-counter-hero');
+    const footerEl = document.getElementById('footer-visit-info');
+    const msg = count === 1
+        ? '🌸 First visit — welcome to my little world!'
+        : `💗 You've visited ${count} time${count > 1 ? 's' : ''} — thank you for coming back!`;
+    if (heroEl) heroEl.textContent = msg;
+    if (footerEl) footerEl.textContent = `Visit #${count} — ${new Date().toLocaleDateString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' })}`;
+}
+
+// ============================================================
+// WELCOME TOASTS
+// ============================================================
+
+const toastMessages = [
+    ['🌸 Welcome! So happy you stopped by!', '💅 Your glow is as iconic as this portfolio.'],
+    ['✨ Back again? You clearly have great taste!', '🎀 The pinkest portfolio this side of the internet!'],
+    ['💗 Hey bestie, welcome back!', '🌺 This portfolio missed you!'],
+    ['🌹 Third time\'s the charm — or is it the pink?', '💖 Look at you, a loyal fan!'],
+    ['👑 A true regular! This is your safe space.', '🌷 Your loyalty is unmatched!'],
+];
+
+function showWelcomeToast(visitCount, lastQuarter) {
+    const idx = Math.min(visitCount - 1, toastMessages.length - 1);
+    const msgs = toastMessages[idx];
+    showToast(msgs[0]);
+    if (lastQuarter) {
+        setTimeout(() => showToast(`📌 Last time you were on: ${lastQuarter}`), 800);
+    }
+    setTimeout(() => showToast(msgs[1]), 1600);
+}
+
+function showToast(message) {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = message;
+    container.appendChild(toast);
+    setTimeout(() => toast.remove(), 4100);
+}
+
+// ============================================================
+// QUARTER & SECTION TABS
+// ============================================================
+
+function showQuarter(qId, btn, saveTocookie = true) {
+    // Hide all panes
+    document.querySelectorAll('.quarter-pane').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.quarter-tab').forEach(t => t.classList.remove('active'));
+
+    // Show selected
+    document.getElementById('pane-' + qId).classList.add('active');
+    if (btn) btn.classList.add('active');
+
+    // Save to cookie
+    if (saveTocookie !== false && getCookie(COOKIE_CONSENT_KEY) === 'accepted') {
+        const labels = { q1q2: '1st & 2nd Quarter', q3: '3rd Quarter', q4: '4th Quarter' };
+        setCookie(LAST_QUARTER_KEY, qId + ' (' + (labels[qId] || qId) + ')', 365);
+    }
+
+    // Sparkle effect on tab click
+    if (btn) spawnSparkle(btn);
+}
+
+function showSub(qId, subId, btn) {
+    const pane = document.getElementById('pane-' + qId);
+    pane.querySelectorAll('.sub-pane').forEach(p => p.classList.remove('active'));
+    pane.querySelectorAll('.section-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(qId + '-' + subId).classList.add('active');
+    if (btn) { btn.classList.add('active'); spawnSparkle(btn); }
+}
+
+// ============================================================
+// SPARKLE CURSOR
+// ============================================================
+
+const sparkleEmojis = ['✨', '💗', '🌸', '⭐', '💫', '🌺', '🌷'];
+
+document.addEventListener('click', function(e) {
+    if (e.target.closest('#gate-overlay') || e.target.closest('#cookie-banner')) return;
+    spawnSparkleAt(e.clientX, e.clientY);
+});
+
+function spawnSparkleAt(x, y) {
+    const s = document.createElement('span');
+    s.className = 'sparkle';
+    s.style.left = x - 12 + 'px';
+    s.style.top = y - 12 + 'px';
+    s.textContent = sparkleEmojis[Math.floor(Math.random() * sparkleEmojis.length)];
+    document.body.appendChild(s);
+    setTimeout(() => s.remove(), 750);
+}
+
+function spawnSparkle(el) {
+    const rect = el.getBoundingClientRect();
+    spawnSparkleAt(rect.left + rect.width / 2, rect.top + rect.height / 2);
+}
+
+// ============================================================
+// SCROLL PROGRESS BAR
+// ============================================================
+
+window.addEventListener('scroll', () => {
+    const scrollTop = document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+    document.getElementById('scroll-bar').style.width = progress + '%';
+});
+
+
+// ============================================================
+// AP LESSON TABS
+// ============================================================
+function showAPLesson(lessonId, btn) {
+    document.querySelectorAll('.ap-lesson').forEach(p => {
+        p.classList.remove('active');
+        p.style.display = 'none';
+    });
+    const target = document.getElementById(lessonId);
+    target.classList.add('active');
+    target.style.display = 'block';
+    if (btn) {
+        btn.closest('.section-tabs').querySelectorAll('.section-tab').forEach(t => t.classList.remove('active'));
+        btn.classList.add('active');
+        spawnSparkle(btn);
+    }
+}
+// ============================================================
+// INIT
+// ============================================================
+
+document.addEventListener('DOMContentLoaded', setupGate);
+</script>
+</body>
+</html>
